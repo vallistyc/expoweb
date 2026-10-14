@@ -1,51 +1,25 @@
-import Image from "next/image";
-import DoorIntro from "./experimental/door-intro";
-import MenuCard from "./component/MenuCard";
-import Login from "./component/Login";
-import HeroHeading from "./component/HeroHeading";
-// import './hero.css'
+"use client";
 
-const Stakes = [
-  "SMAN 1 Paciran"
-]
+import { useRive, Layout, Fit, Alignment } from "@rive-app/react-canvas";
 
 export default function Home() {
+  const { RiveComponent } = useRive({
+    src: "/char.riv",
+    animations: "Timeline 2",
+    autoplay: true,
+    layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
+  });
+
   return (
-    <>
-      <DoorIntro />
-      <main />
-      <section className="Hero relative isolate w-full flex flex-col justify-end items-center h-screen">
-        <div className="relative z-10 flex flex-row items-center h-screen w-full px-25">
-          <div className="flex flex-col justify-start items-start gap-5 pt-10">
-            <HeroHeading />
-            <Login />
-          </div>
+    <main className="flex flex-col justify-center h-screen w-full gap-0 bg-cyan-800">
+      <section> 
+        <div className="Layer 1">
+          <h1 className="absolute font-arexa text-center text-7xl top-1">
+            EXCAMP
+          </h1>
+          <RiveComponent style={{ position:"absolute", bottom: 0, width: "100%", height: 500 }} />
         </div>
-
-        <Image 
-        src="/hero-img.gif"
-        alt="Hero Image"
-        width={800}
-        height={600}
-        className="absolute inset-0 z-0 w-full h-full object-cover brightness-75"
-        />
       </section>
-
-      <section className="Menu flex flex-col justify-center items-center py-10">
-        <h2 className="font-montserrat font-black text-4xl text-[#290000]">
-          Kabar Terbaru
-        </h2>
-      </section>
-
-      <section className="About ">
-
-      </section>
-      <section className="Hero ">
-
-      </section>
-      <section className="Hero ">
-
-      </section>
-    </>
+    </main>
   );
 }
