@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+  overflow-y: auto;
+}
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.font-poppins {
+  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+}
+
+.font-alexb {
+  font-family: var(--font-alexb), cursive;
+}
+
+.font-fraunces {
+  font-family: var(--font-fraunces), Arial, Helvetica;
+}
+
+.font-arexa {
+  font-family: var(--font-arexa), Arial, Helvetica, sans-serif;
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+}

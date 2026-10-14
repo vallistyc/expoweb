@@ -1,0 +1,169 @@
+@keyframes door-open {
+  from { transform: rotateY(0); }
+  to { transform: rotateY(105deg); }
+}
+@keyframes dim {
+  from { filter: brightness(1); }
+  to { filter: brightness(0.45); }
+}
+@keyframes scene-zoom {
+  from { transform: scale(1); }
+  to { transform: scale(var(--zoom-scale, 3.6)); }
+}
+@keyframes room-fade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes wall-fade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.track {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  height: 100svh;
+  pointer-events: none;
+}
+
+/* =====================================================================
+   2. STAGE: panggung yang menempel (sticky) selama track di-scroll
+   Berbeda dengan position: fixed, sticky tetap berada di dalam alur
+   dokumen, jadi hilang bersama hero saat section berikutnya datang.
+   ===================================================================== */
+.stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: #080202;
+}
+
+.stage::before {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 80% at 50% 30%, #7a0c0c 0%, #3d0505 70%, #1f0202 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.fadeWalls .stage::before {
+  animation: wall-fade 700ms ease-out both;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform-origin: var(--zoom-origin-x, 50%) var(--zoom-origin-y, 39%);
+  will-change: transform;
+}
+
+.zooming {
+}
+
+.zooming {
+  animation: scene-zoom 3.2s cubic-bezier(0.45, 0, 0.8, 0.5) both;
+}
+
+.floor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 28%;
+  border-top: 1px solid rgb(0 0 0 / 35%);
+  background:
+    linear-gradient(180deg, rgb(20 0 0 / 42%), transparent 24%),
+    radial-gradient(ellipse at 50% 0%, #5a0808 0%, #380303 68%, #250202 100%);
+}
+
+/* Parent LANGSUNG dari .door. Perspective harus di sini. */
+.opening {
+  position: absolute;
+  bottom: 28%;
+  left: 50%;
+  z-index: 1;
+  width: clamp(160px, 46vw, 260px);
+  aspect-ratio: 787 / 1350; /* samakan dengan width/height gambar */
+  perspective: 900px;
+  transform: translateX(-50%);
+}
+
+/* Ruangan di balik pintu. Kalau tepinya bocor di sekitar gambar pintu,
+   kecilkan dengan inset: 3% 6%; */
+.room {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 60%, #fff6c8 0%, #ffd21f 35%, #ff7a00 70%, #7a0c0c 100%);
+}
+
+.fading {
+  animation: room-fade 700ms ease-out both;
+}
+
+/* Daun pintu: engsel di kiri */
+.door {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  will-change: transform;
+  animation: door-open 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+}
+
+.zooming .door {
+  opacity: 0;
+  transition: opacity 500ms ease 1.7s;
+}
+
+.doorImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  backface-visibility: hidden;
+  animation: dim 2.4s ease-in-out 0.35s both;
+}
+
+.enter {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  z-index: 3;
+  transform: translateX(-50%);
+  padding: 12px 36px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: #5a4a1a;
+  background: #ffd21f;
+  clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
+}
+
+.content {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #0a0a0a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .door,
+  .doorImg,
+  .zooming,
+  .fading,
+  .zooming .door {
+    animation-duration: 1ms;
+    animation-delay: 0s;
+  }
+
+  .zooming .door {
+    transition-duration: 1ms;
+    transition-delay: 0s;
+  }
+}
