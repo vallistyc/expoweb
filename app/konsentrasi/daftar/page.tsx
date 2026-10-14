@@ -3,7 +3,9 @@
 export default function DaftarKonsentrasi() {
     return (
         <>
-            
+            <div>
+                
+            </div>
         </>
     );
 }
