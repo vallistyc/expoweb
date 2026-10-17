@@ -1,0 +1,43 @@
+.login {
+  display: inline-block;
+  margin-top: clamp(0.75rem, 3.5cqw, 1.4rem);
+  min-width: 45%;
+  padding: 1.65cqw 12cqw;
+  background-color: #1e1608;
+  color: #f0c77c;
+  font-size: clamp(0.95rem, 6cqw, 1.3rem);
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+  clip-path: polygon(
+    14% 0,
+    86% 0,
+    100% 28%,
+    100% 72%,
+    86% 100%,
+    14% 100%,
+    0 72%,
+    0 28%
+  );
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.login:hover {
+  background-color: #f0c77c;
+  color: #1e1608;
+}
+
+.login:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .login {
+    margin-top: 0.7rem;
+    padding: 0.35rem 2.5rem;
+    font-size: 0.9rem;
+  }
+}

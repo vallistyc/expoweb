@@ -65,7 +65,7 @@ function Navigation({ isExperimentalPage }: { isExperimentalPage: boolean }) {
   return (
     <header
       aria-hidden={!isVisible}
-      className={`fixed left-1/2 top-[19px] z-50 w-[calc(100%-32px)] max-w-[370px] -translate-x-1/2 transition-[opacity,transform,visibility] duration-700 ease-out motion-reduce:transition-none md:max-w-7xl ${
+      className={`fixed left-1/2 top-5 z-50 w-[calc(100%-32px)] max-w-full -translate-x-1/2 transition-[opacity,transform,visibility] duration-700 ease-out motion-reduce:transition-none md:max-w-7xl ${
         isVisible
           ? "visible translate-y-0 opacity-100"
           : "invisible -translate-y-6 opacity-0 pointer-events-none"

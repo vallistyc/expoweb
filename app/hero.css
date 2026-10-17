@@ -1,0 +1,424 @@
+/* Hero template: mobile first, CSS murni (tanpa Tailwind, tanpa JS) */
+
+/* ---------- Ruang scroll + panggung yang menempel ---------- */
+.hero-scroll {
+  position: relative;
+  height: 250svh; /* 100svh layar + 150svh jarak scroll animasi */
+}
+
+.hero {
+  --lift: 1.5rem; /* mobile: foreground naik 24px dari dasar */
+  --overscan: 3rem; /* layer landscape dibuat lebih rendah dari dasar, cadangan saat bergeser */
+  --sky-top: #ffd2c6;
+  --sky-bottom: #e8f6fd;
+
+  position: sticky; /* jangan beri overflow hidden/auto pada parent mana pun */
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  pointer-events: none; /* semua dekoratif; elemen interaktif mengaktifkan sendiri */
+  background: linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-bottom) 100%);
+}
+
+/* ---------- Dasar semua layer ---------- */
+.sky,
+.land,
+.wall {
+  position: absolute;
+  max-width: none;
+  user-select: none;
+}
+
+.parallax {
+  will-change: transform;
+}
+
+/* ---------- 1. Langit ---------- */
+.sky {
+  inset: -5rem;
+  width: calc(100% + 10rem);
+  height: calc(100% + 10rem);
+  object-fit: cover;
+  object-position: center bottom;
+}
+.sky.is-ph {
+  background: transparent; /* placeholder: pakai gradient .hero */
+}
+
+/* ---------- 2. Panggung landscape ---------- */
+.stage {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  bottom: 0;
+  width: max(100%, 130svh); /* desktop: ubah rasio lebar panggung jika gunung terlalu besar/kecil */
+  aspect-ratio: 8 / 5;
+  translate: -50% 0; /* properti translate terpisah, tidak bentrok dengan transform parallax */
+}
+
+.hero-layer-picture {
+  display: contents;
+}
+
+.land {
+  left: 0;
+  bottom: calc(var(--overscan) * -1);
+  width: 100%;
+  height: auto;
+}
+.land.is-ph {
+  height: var(--h);
+  background: var(--ph);
+  clip-path: var(--clip);
+}
+.land--far {
+  --h: 70%;
+  --ph: #8cc4da;
+  --clip: polygon(0 55%, 20% 40%, 38% 52%, 58% 32%, 80% 48%, 100% 38%, 100% 100%, 0 100%);
+}
+.land--mid-far {
+  --h: 61%;
+  --ph: #75b3cc;
+  --clip: polygon(0 50%, 18% 36%, 36% 56%, 56% 36%, 78% 54%, 100% 42%, 100% 100%, 0 100%);
+}
+.land--mid {
+  --h: 52%;
+  --ph: #5fa3be;
+  --clip: polygon(0 45%, 16% 62%, 34% 38%, 55% 58%, 74% 34%, 100% 52%, 100% 100%, 0 100%);
+}
+.land--near {
+  --h: 36%;
+  --ph: #3b7f9c;
+  --clip: polygon(0 40%, 22% 24%, 42% 44%, 63% 20%, 84% 40%, 100% 28%, 100% 100%, 0 100%);
+}
+/* ---------- 2b. Batu ---------- */
+.rock {
+  --rock-raise: 0.2svh; /* desktop: atur tinggi batu agar bertemu foreground */
+  position: absolute;
+  z-index: 30;
+  left: 50%;
+  translate: -50% 0;
+  bottom: calc(var(--lift) + var(--rock-raise));
+  margin-bottom: 2.4%;
+  width: 110%; /* desktop diatur lagi pada breakpoint 640px, 1024px, dan 1280px */
+  max-width: 27rem;
+  container-type: inline-size;
+}
+.rock__character {
+  position: absolute;
+  z-index: 1;
+  bottom: 67%; /* desktop: atur pijakan karakter agar tetap menyentuh puncak batu */
+  left: 50%;
+  width: clamp(9rem, 32vw, 22rem); /* desktop: ukuran horizontal karakter */
+  height: clamp(17rem, 47svh, 30rem); /* desktop: ukuran vertikal karakter */
+  translate: -50% 0;
+  pointer-events: none;
+}
+.rock__character canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.rock__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.rock__img.is-ph {
+  aspect-ratio: 1700 / 464;
+  background: #cfd8d3;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.rock__name,
+.rock__date {
+  position: absolute;
+  left: 50%;
+  translate: -50% -75%;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+.rock__name {
+  top: 58%;
+  font-size: 6.5cqw;
+  font-weight: 800;
+  color: #00323f;
+}
+.rock__date {
+  top: 77%;
+  font-size: 3.1cqw;
+  letter-spacing: 0.12em;
+  color: #546057;
+}
+
+/* ---------- 3. Dinding ---------- */
+.wall {
+  z-index: 40;
+  top: -1%;
+  height: 102%;
+  width: auto;
+}
+.wall--l {
+  left: clamp(-4rem, -3.5vw, -1.5rem); /* desktop: posisi dinding kiri */
+}
+.wall--r {
+  right: clamp(-4rem, -3.5vw, -1.5rem); /* desktop: posisi dinding kanan */
+}
+.wall.is-ph {
+  width: 16vw;
+  background: linear-gradient(to right, #0d1a1f, rgb(13 26 31 / 0));
+}
+.wall--r.is-ph {
+  background: linear-gradient(to left, #0d1a1f, rgb(13 26 31 / 0));
+}
+
+/* ---------- 4. Teks tengah ---------- */
+.title {
+  position: absolute;
+  z-index: 50;
+  inset-inline: 1rem;
+  top: clamp(7rem, 17svh, 11rem); /* desktop: tinggi blok judul dari atas layar */
+  display: flex;
+  justify-content: center;
+}
+.title__box {
+  container-type: inline-size; /* cqw = 1% lebar kotak ini, teks ikut skala */
+  width: min(88vw, 34rem); /* desktop: lebar maksimum area judul dan tombol */
+  text-align: center;
+  pointer-events: auto;
+}
+
+.title__h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 0;
+  color: #1e1608;
+  font-family: var(--font-arexa), Georgia, serif;
+  font-size: clamp(4.5rem, 40cqw, 9rem); /* desktop: ukuran judul utama */
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.title__h1 span {
+  color: #42251a;
+  font-family: var(--font-kastemo), Georgia, serif;
+  font-size: clamp(0.9rem, 6cqw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.title__sub {
+  margin: 4cqw 0 0;
+  font-size: 5.5cqw;
+  color: #00323f;
+}
+/* ---------- 5. Foreground + blok hitam ---------- */
+.fore {
+  position: absolute;
+  z-index: 40;
+  left: -1.25rem;
+  right: -1.25rem;
+  bottom: calc(var(--lift) - 120svh); /* gambar duduk di dasar, blok hitam mengisi 120svh di bawahnya */
+}
+.fore::after {
+  content: "";
+  display: block;
+  height: 120svh;
+  background: #000;
+}
+.fore__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: -3px;
+}
+.fore__img.is-ph {
+  height: 16svh;
+  background: #000;
+  clip-path: polygon(0 40%, 15% 20%, 35% 38%, 55% 10%, 75% 30%, 100% 15%, 100% 100%, 0 100%);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes bob {
+  50% {
+    transform: translateY(-2%);
+  }
+}
+@keyframes parallax {
+  to {
+    transform: translate3d(var(--shift-x, 0), var(--shift, 0), 0);
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---------- Gerak mengikuti scroll (tanpa JS) ---------- */
+/* Browser yang belum mendukung akan menampilkan hero statis */
+@supports (animation-timeline: scroll()) {
+  .parallax {
+    animation: parallax linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 150svh;
+  }
+  .title {
+    animation: fade-out linear both;
+    animation-timeline: scroll(root);
+    animation-range: 10svh 70svh;
+  }
+}
+
+/* ---------- Breakpoint (mobile first, hanya menambah) ---------- */
+@media (min-width: 640px) {
+  .hero { --lift: 0px; }
+  .rock { width: 72%; max-width: none; } /* desktop kecil/tablet: lebar batu terhadap layar */
+}
+@media (min-width: 1024px) {
+  .rock { width: 50%; } /* desktop: lebar batu pada layar 1024px ke atas */
+}
+@media (min-width: 1280px) {
+  .rock { width: 39%; } /* desktop lebar: perkecil batu agar komposisi tetap seimbang */
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .parallax,
+  .title {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-scroll {
+    height: 190svh;
+  }
+
+  .hero {
+    --lift: 0.5rem;
+    --overscan: 2rem;
+  }
+
+  .title {
+    top: clamp(10rem, 32svh, 18rem);
+  }
+
+  .title__box {
+    width: min(88vw, 22rem);
+  }
+
+  .rock {
+    width: 112%;
+    max-width: 27rem;
+    margin-bottom: 3%;
+  }
+
+  .rock__character {
+    width: clamp(9rem, 45vw, 17rem);
+    height: clamp(11rem, 45svh, 24rem);
+  }
+
+  .stage {
+    width: min(max(100%, 105svh), 165vw);
+  }
+
+  .land--mid {
+    bottom: clamp(1.5rem, 4svh, 3rem);
+  }
+
+  .title__h1 {
+    font-size: clamp(3.25rem, 32cqw, 7rem);
+  }
+
+  .wall--l,
+  .wall--r {
+    left: auto;
+    right: auto;
+  }
+
+  .wall--l {
+    left: clamp(-4rem, -10vw, -1.5rem);
+  }
+
+  .wall--r {
+    right: clamp(-4rem, -10vw, -1.5rem);
+  }
+
+  .wall {
+    top: 0;
+    width: min(58vw, 18rem);
+    height: auto;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .parallax {
+      animation-range: 0 90svh;
+    }
+
+    .title {
+      animation-range: 8svh 50svh;
+    }
+  }
+}
+
+@media (min-width: 641px) and (max-width: 767px) {
+  .wall {
+    top: 0;
+    width: min(58vw, 18rem);
+    height: auto;
+  }
+
+  .wall--l {
+    left: clamp(-4rem, -10vw, -1.5rem);
+  }
+
+  .wall--r {
+    right: clamp(-4rem, -10vw, -1.5rem);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .hero-scroll {
+    height: 160svh;
+  }
+
+  .title {
+    top: clamp(4.5rem, 18svh, 6rem);
+  }
+
+  .title__box {
+    width: min(70vw, 30rem);
+  }
+
+  .title__h1 {
+    font-size: clamp(3rem, 14cqw, 4rem);
+  }
+
+  .title__h1 span {
+    font-size: clamp(0.8rem, 4cqw, 1rem);
+  }
+
+  .rock__character {
+    width: clamp(5rem, 18vw, 9rem);
+    height: min(46svh, 10.5rem);
+  }
+}
+
+@media (max-width: 640px) and (max-height: 650px) and (orientation: portrait) {
+  .title {
+    top: clamp(7rem, 24svh, 10rem);
+  }
+
+  .title__h1 {
+    font-size: clamp(3rem, 30cqw, 5.5rem);
+  }
+
+  .rock__character {
+    width: clamp(7rem, 38vw, 10rem);
+    height: 34svh;
+  }

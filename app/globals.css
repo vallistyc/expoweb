@@ -11,6 +11,8 @@
   --font-poppins: var(--font-poppins);
   --font-arexa: var(--font-arexa);
   --font-montserrat: var(--font-montserrat);
+  --font-kastemo: var(--font-kastemo);
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,4 +56,8 @@ body::-webkit-scrollbar {
 
 .font-montserrat {
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+}
+
+.font-kastemo {
+  font-family: var(--font-kastemo), Arial, Helvetica, sans-serif
 }
