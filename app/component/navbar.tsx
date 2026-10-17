@@ -33,6 +33,7 @@ const menuPanelClass =
 
 export default function Navbar() {
   const pathname = usePathname();
+  if (pathname === "/konsentrasi/daftar") return null;
   const isExperimentalPage = pathname === "/experimental" || pathname === "/experimental/";
   return <Navigation key={pathname} isExperimentalPage={isExperimentalPage} />;
 }

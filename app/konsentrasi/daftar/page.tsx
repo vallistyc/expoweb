@@ -86,10 +86,9 @@ export default function DaftarKonsentrasi() {
   }
 
   return (
-    <main className="grid min-h-svh place-items-center bg-[radial-gradient(ellipse_at_90%_0%,rgba(240,199,124,0.22),transparent_35rem),#f4ecdc] px-4 pt-20 pb-6 text-[#1e1608] md:pt-36 md:pb-12">
+    <main className="grid min-h-svh place-items-center bg-[radial-gradient(ellipse_at_90%_0%,rgba(240,199,124,0.22),transparent_35rem),#f4ecdc] px-4 pt-8 pb-6 text-[#1e1608] md:pt-12 md:pb-12">
       <div className="w-full max-w-3xl border border-[#281311]/15 bg-[#fffcf6]/95 p-6 shadow-2xl shadow-[#281311]/10 sm:p-10 lg:p-14">
-        <Link className="text-sm font-semibold text-[#714526] underline underline-offset-4" href="/">← Beranda</Link>
-        <p className="mt-8 mb-2 font-kastemo text-[0.95rem] tracking-[0.12em] text-[#9b5c31] uppercase">Kelas Konsentrasi</p>
+        <p className="mb-2 font-kastemo text-[0.95rem] tracking-[0.12em] text-[#9b5c31] uppercase">Kelas Konsentrasi</p>
         <h1 className="font-montserrat text-3xl leading-tight font-bold sm:text-5xl">Form Pemetaan Rumpun Ilmu</h1>
         <p className="mt-4 mb-8 max-w-2xl leading-relaxed text-[#655b51]">
           Lengkapi data diri dan pilih dua rumpun ilmu yang paling ingin kamu
