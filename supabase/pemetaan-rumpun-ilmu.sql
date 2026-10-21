@@ -86,6 +86,21 @@ create index if not exists pemetaan_rumpun_1_idx
 create index if not exists pemetaan_rumpun_2_idx
   on public.pemetaan_rumpun_ilmu (rumpun_ilmu_2);
 
+-- Izinkan admin mengganti nama opsi yang sudah dipakai dan ikut memperbarui
+-- referensinya pada data peserta.
+alter table public.pemetaan_rumpun_ilmu
+  drop constraint if exists pemetaan_kelas_opsi_fk,
+  drop constraint if exists pemetaan_rumpun_1_opsi_fk,
+  drop constraint if exists pemetaan_rumpun_2_opsi_fk;
+
+alter table public.pemetaan_rumpun_ilmu
+  add constraint pemetaan_kelas_opsi_fk foreign key (kelas)
+    references public.opsi_kelas(label) on update cascade on delete restrict,
+  add constraint pemetaan_rumpun_1_opsi_fk foreign key (rumpun_ilmu_1)
+    references public.opsi_rumpun_ilmu(label) on update cascade on delete restrict,
+  add constraint pemetaan_rumpun_2_opsi_fk foreign key (rumpun_ilmu_2)
+    references public.opsi_rumpun_ilmu(label) on update cascade on delete restrict;
+
 create table if not exists public.admin_login_attempts (
   ip_key text primary key,
   attempts integer not null default 1,

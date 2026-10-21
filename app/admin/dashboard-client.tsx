@@ -247,9 +247,10 @@ export default function AdminDashboardClient() {
           <h1 className="font-montserrat text-3xl font-bold sm:text-4xl">Pemetaan Rumpun Ilmu</h1>
           <p className="mt-2 text-sm text-[#655b51]">Data diperbarui otomatis setiap 10 detik.</p>
         </div>
-        <div className="text-right text-sm text-[#655b51]">
-          <p className="font-semibold text-[#281311]">{numberFormat.format(data?.total || 0)} peserta</p>
-          <p>{updatedAt ? `Sinkron ${dateFormat.format(updatedAt)}` : "Menghubungkan…"}</p>
+        <div className="min-w-48 border-2 border-[#9b5c31] bg-[#281311] px-5 py-4 text-center text-[#f0c77c] shadow-lg shadow-[#281311]/15">
+          <p className="text-xs font-bold tracking-[0.14em] uppercase">Total peserta</p>
+          <p className="mt-1 font-montserrat text-3xl font-bold leading-none sm:text-4xl">{numberFormat.format(data?.total || 0)}</p>
+          <p className="mt-2 text-xs text-[#f4ecdc]/80">{updatedAt ? `Sinkron ${dateFormat.format(updatedAt)}` : "Menghubungkan…"}</p>
         </div>
       </div>
 

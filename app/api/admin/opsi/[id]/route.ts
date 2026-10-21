@@ -3,6 +3,16 @@ import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/ap
 
 type Context = { params: Promise<{ id: string }> };
 
+async function supabaseError(response: Response, fallback: string) {
+  const body = await response.text();
+  try {
+    const parsed = JSON.parse(body) as { code?: string; message?: string };
+    if (parsed.code === "23505") return "Opsi dengan nama itu sudah ada.";
+    if (parsed.code === "23503") return "Opsi ini masih digunakan peserta. Nonaktifkan opsi jika tidak ingin dipakai lagi.";
+  } catch {}
+  return fallback;
+}
+
 async function getTarget(request: Request, context: Context) {
   if (!isSameOriginRequest(request)) return { error: Response.json({ error: "Permintaan lintas origin ditolak." }, { status: 403 }) };
   if (!(await isAdminAuthenticated())) return { error: Response.json({ error: "Sesi admin tidak valid." }, { status: 401 }) };
@@ -57,7 +67,7 @@ export async function PATCH(request: Request, context: Context) {
       body: JSON.stringify(update),
       cache: "no-store",
     });
-    if (!response.ok) return Response.json({ error: "Opsi tidak dapat diperbarui. Jika sudah dipakai peserta, nonaktifkan lalu buat opsi baru." }, { status: 409 });
+    if (!response.ok) return Response.json({ error: await supabaseError(response, "Opsi tidak dapat diperbarui.") }, { status: response.status === 409 ? 409 : 502 });
     const rows = await response.json();
     if (!rows.length) return Response.json({ error: "Opsi tidak ditemukan." }, { status: 404 });
     return Response.json({ option: rows[0] }, { headers: { "Cache-Control": "no-store" } });
@@ -77,9 +87,7 @@ export async function DELETE(request: Request, context: Context) {
       headers: supabaseHeaders(config.serviceKey, { Prefer: "return=representation" }),
       cache: "no-store",
     });
-    if (!response.ok) {
-      return Response.json({ error: "Opsi ini masih digunakan peserta. Nonaktifkan opsi jika tidak ingin dipakai lagi." }, { status: 409 });
-    }
+    if (!response.ok) return Response.json({ error: await supabaseError(response, "Opsi gagal dihapus.") }, { status: response.status === 409 ? 409 : 502 });
     const rows = await response.json();
     if (!rows.length) return Response.json({ error: "Opsi tidak ditemukan." }, { status: 404 });
     return Response.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
