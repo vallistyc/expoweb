@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
@@ -16,6 +16,7 @@ type Participant = {
   created_at: string;
 };
 type ParticipantForm = Omit<Participant, "pas_foto" | "created_at">;
+type NotificationMessage = { id: number; title: string; message: string; tone: "success" | "error" };
 type Stat = { label: string; total: number; pilihan_1: number; pilihan_2: number; active: boolean };
 type Option = { id: string; label: string; sort_order: number; active: boolean };
 type DashboardData = {
@@ -46,6 +47,10 @@ export default function AdminDashboardClient() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [participantForm, setParticipantForm] = useState<ParticipantForm | null>(null);
   const [savingParticipant, setSavingParticipant] = useState(false);
+  const [notification, setNotification] = useState<NotificationMessage | null>(null);
+  const [browserNotificationsEnabled, setBrowserNotificationsEnabled] = useState(false);
+  const notificationId = useRef(0);
+  const knownParticipantTotal = useRef<number | null>(null);
 
   const loadData = useCallback(async (requestedPage: number, showLoading = false) => {
     if (showLoading) setLoading(true);
@@ -60,12 +65,46 @@ export default function AdminDashboardClient() {
       setData(result);
       setUpdatedAt(new Date());
       setError("");
+      const nextTotal = Number(result.total) || 0;
+      if (knownParticipantTotal.current !== null && nextTotal > knownParticipantTotal.current) {
+        const added = nextTotal - knownParticipantTotal.current;
+        showNotification(
+          "Peserta baru masuk",
+          `${added} pendaftaran baru berhasil diterima. Total peserta sekarang ${numberFormat.format(nextTotal)}.`,
+          "success",
+        );
+      }
+      knownParticipantTotal.current = nextTotal;
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Data dashboard gagal dimuat.");
     } finally {
       setLoading(false);
     }
   }, [router]);
+
+  function showNotification(title: string, message: string, tone: NotificationMessage["tone"]) {
+    const id = notificationId.current + 1;
+    notificationId.current = id;
+    setNotification({ id, title, message, tone });
+    window.setTimeout(() => setNotification((current) => current?.id === id ? null : current), 5000);
+    if (tone === "success" && "Notification" in window && Notification.permission === "granted") {
+      new Notification(title, { body: message });
+    }
+  }
+
+  async function enableBrowserNotifications() {
+    if (!("Notification" in window)) {
+      showNotification("Notifikasi browser tidak tersedia", "Gunakan toast di dashboard untuk melihat event.", "error");
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    setBrowserNotificationsEnabled(permission === "granted");
+    showNotification(
+      permission === "granted" ? "Notifikasi browser aktif" : "Notifikasi browser belum diaktifkan",
+      permission === "granted" ? "Anda akan menerima notifikasi saat peserta baru masuk." : "Izinkan notifikasi browser untuk menerima pemberitahuan di luar tab.",
+      permission === "granted" ? "success" : "error",
+    );
+  }
 
   useEffect(() => {
     const initialLoad = window.setTimeout(() => void loadData(page), 0);
@@ -101,9 +140,12 @@ export default function AdminDashboardClient() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Opsi gagal ditambahkan.");
       setNewLabel("");
+      showNotification("Opsi ditambahkan", `${optionType === "kelas" ? "Kelas" : "Rumpun ilmu"} baru berhasil ditambahkan.`, "success");
       await loadData(page);
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Opsi gagal ditambahkan.");
+      const message = saveError instanceof Error ? saveError.message : "Opsi gagal ditambahkan.";
+      setError(message);
+      showNotification("Opsi gagal ditambahkan", message, "error");
     } finally {
       setSavingOption(false);
     }
@@ -120,9 +162,12 @@ export default function AdminDashboardClient() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Opsi gagal diperbarui.");
       setEditing(null);
+      showNotification("Opsi diperbarui", `${type === "kelas" ? "Kelas" : "Rumpun ilmu"} berhasil diperbarui.`, "success");
       await loadData(page);
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : "Opsi gagal diperbarui.");
+      const message = updateError instanceof Error ? updateError.message : "Opsi gagal diperbarui.";
+      setError(message);
+      showNotification("Opsi gagal diperbarui", message, "error");
     }
   }
 
@@ -137,9 +182,12 @@ export default function AdminDashboardClient() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Opsi gagal dihapus.");
+      showNotification("Opsi dihapus", `${type === "kelas" ? "Kelas" : "Rumpun ilmu"} berhasil dihapus.`, "success");
       await loadData(page);
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : "Opsi gagal dihapus.");
+      const message = deleteError instanceof Error ? deleteError.message : "Opsi gagal dihapus.";
+      setError(message);
+      showNotification("Opsi gagal dihapus", message, "error");
     }
   }
 
@@ -214,9 +262,12 @@ export default function AdminDashboardClient() {
       }
       if (!response.ok) throw new Error(result.error || "Data peserta gagal disimpan.");
       setParticipantForm(null);
+      showNotification(isEditing ? "Peserta diperbarui" : "Peserta ditambahkan", isEditing ? "Data peserta berhasil diperbarui." : "Data peserta berhasil ditambahkan.", "success");
       await loadData(page);
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Data peserta gagal disimpan.");
+      const message = saveError instanceof Error ? saveError.message : "Data peserta gagal disimpan.";
+      setError(message);
+      showNotification("Data peserta gagal disimpan", message, "error");
     } finally {
       setSavingParticipant(false);
     }
@@ -233,14 +284,24 @@ export default function AdminDashboardClient() {
         return;
       }
       if (!response.ok) throw new Error(result.error || "Peserta gagal dihapus.");
+      showNotification("Peserta dihapus", "Data peserta berhasil dihapus.", "success");
       await loadData(Math.min(page, Math.max(1, Math.ceil(((data?.total || 1) - 1) / (data?.pageSize || 50)))));
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : "Peserta gagal dihapus.");
+      const message = deleteError instanceof Error ? deleteError.message : "Peserta gagal dihapus.";
+      setError(message);
+      showNotification("Peserta gagal dihapus", message, "error");
     }
   }
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {notification && (
+        <div className={`fixed right-4 top-4 z-[60] w-[min(22rem,calc(100%-2rem))] border-l-4 bg-[#fffcf6] p-4 shadow-xl ${notification.tone === "error" ? "border-red-600" : "border-[#9b5c31]"}`} role="status" aria-live="polite">
+          <p className="font-montserrat text-sm font-bold text-[#281311]">{notification.title}</p>
+          <p className="mt-1 text-sm leading-relaxed text-[#655b51]">{notification.message}</p>
+          <button type="button" onClick={() => setNotification(null)} className="mt-2 text-xs font-semibold text-[#714526] underline underline-offset-2">Tutup</button>
+        </div>
+      )}
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="mb-2 font-kastemo tracking-[0.12em] text-[#9b5c31] uppercase">Ringkasan pendaftaran</p>
@@ -339,6 +400,7 @@ export default function AdminDashboardClient() {
               </div>
               <div className="flex flex-wrap gap-2">
                 <button type="button" onClick={() => startParticipantForm()} className="border border-[#281311] px-3 py-2 text-sm font-semibold hover:bg-[#f4ecdc]">Tambah peserta</button>
+                {!browserNotificationsEnabled && <button type="button" onClick={() => void enableBrowserNotifications()} className="border border-[#9b5c31] px-3 py-2 text-sm font-semibold text-[#714526] hover:bg-[#f4ecdc]">Aktifkan notifikasi</button>}
                 <button type="button" onClick={() => void downloadExcel()} disabled={isDownloading} className="border border-[#281311] bg-[#281311] px-3 py-2 text-sm font-semibold text-[#f0c77c] hover:bg-[#f0c77c] hover:text-[#281311] disabled:cursor-wait disabled:opacity-60">
                   {isDownloading ? "Menyiapkan Excel…" : "Unduh Excel"}
                 </button>
