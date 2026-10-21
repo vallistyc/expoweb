@@ -15,6 +15,7 @@ type Participant = {
   rumpun_ilmu_2: string;
   created_at: string;
 };
+type ParticipantForm = Omit<Participant, "pas_foto" | "created_at">;
 type Stat = { label: string; total: number; pilihan_1: number; pilihan_2: number; active: boolean };
 type Option = { id: string; label: string; sort_order: number; active: boolean };
 type DashboardData = {
@@ -43,6 +44,8 @@ export default function AdminDashboardClient() {
   const [editing, setEditing] = useState<{ id: string; label: string } | null>(null);
   const [savingOption, setSavingOption] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [participantForm, setParticipantForm] = useState<ParticipantForm | null>(null);
+  const [savingParticipant, setSavingParticipant] = useState(false);
 
   const loadData = useCallback(async (requestedPage: number, showLoading = false) => {
     if (showLoading) setLoading(true);
@@ -149,6 +152,7 @@ export default function AdminDashboardClient() {
         router.replace("/admin/login");
         return;
       }
+
       if (!response.ok) {
         const result = await response.json();
         throw new Error(result.error || "File Excel gagal dibuat.");
@@ -172,9 +176,68 @@ export default function AdminDashboardClient() {
 
   const participants = data?.participants || [];
   const stats = data?.stats || [];
+  const classOptions = data?.classes || [];
+  const rumpunOptions = data?.rumpun || [];
   const leaderboard = [...stats].sort((a, b) => b.total - a.total || a.label.localeCompare(b.label)).slice(0, 3);
   const options = optionType === "kelas" ? data?.classes || [] : data?.rumpun || [];
   const totalPages = Math.max(1, Math.ceil((data?.total || 0) / (data?.pageSize || 50)));
+
+  function startParticipantForm(participant?: Participant) {
+    setParticipantForm(participant ? {
+      nis: participant.nis,
+      nama_lengkap: participant.nama_lengkap,
+      kelas: participant.kelas,
+      no_wa: participant.no_wa,
+      email: participant.email,
+      rumpun_ilmu_1: participant.rumpun_ilmu_1,
+      rumpun_ilmu_2: participant.rumpun_ilmu_2,
+    } : { nis: "", nama_lengkap: "", kelas: "", no_wa: "", email: "", rumpun_ilmu_1: "", rumpun_ilmu_2: "" });
+    setError("");
+  }
+
+  async function saveParticipant(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!participantForm) return;
+    setSavingParticipant(true);
+    setError("");
+    const isEditing = participants.some((participant) => participant.nis === participantForm.nis);
+    try {
+      const response = await fetch(isEditing ? `/api/admin/pemetaan/${encodeURIComponent(participantForm.nis)}` : "/api/admin/pemetaan", {
+        method: isEditing ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(participantForm),
+      });
+      const result = await response.json();
+      if (response.status === 401) {
+        router.replace("/admin/login");
+        return;
+      }
+      if (!response.ok) throw new Error(result.error || "Data peserta gagal disimpan.");
+      setParticipantForm(null);
+      await loadData(page);
+    } catch (saveError) {
+      setError(saveError instanceof Error ? saveError.message : "Data peserta gagal disimpan.");
+    } finally {
+      setSavingParticipant(false);
+    }
+  }
+
+  async function deleteParticipant(nis: string) {
+    if (!window.confirm(`Hapus data peserta dengan NIS ${nis}?`)) return;
+    setError("");
+    try {
+      const response = await fetch(`/api/admin/pemetaan/${encodeURIComponent(nis)}`, { method: "DELETE" });
+      const result = await response.json();
+      if (response.status === 401) {
+        router.replace("/admin/login");
+        return;
+      }
+      if (!response.ok) throw new Error(result.error || "Peserta gagal dihapus.");
+      await loadData(Math.min(page, Math.max(1, Math.ceil(((data?.total || 1) - 1) / (data?.pageSize || 50)))));
+    } catch (deleteError) {
+      setError(deleteError instanceof Error ? deleteError.message : "Peserta gagal dihapus.");
+    }
+  }
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -274,16 +337,50 @@ export default function AdminDashboardClient() {
                 <p className="mt-1 text-sm text-[#655b51]">Daftar pendaftar terbaru · refresh otomatis 10 detik</p>
               </div>
               <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={() => startParticipantForm()} className="border border-[#281311] px-3 py-2 text-sm font-semibold hover:bg-[#f4ecdc]">Tambah peserta</button>
                 <button type="button" onClick={() => void downloadExcel()} disabled={isDownloading} className="border border-[#281311] bg-[#281311] px-3 py-2 text-sm font-semibold text-[#f0c77c] hover:bg-[#f0c77c] hover:text-[#281311] disabled:cursor-wait disabled:opacity-60">
                   {isDownloading ? "Menyiapkan Excel…" : "Unduh Excel"}
                 </button>
                 <button type="button" onClick={() => void loadData(page, true)} className="border border-[#281311]/25 px-3 py-2 text-sm font-semibold hover:bg-[#f4ecdc]">Segarkan</button>
               </div>
             </div>
+            {participantForm && (
+              <form onSubmit={saveParticipant} className="grid gap-4 border-b border-[#281311]/10 bg-[#f4ecdc]/45 p-5 sm:grid-cols-2 sm:p-7">
+                <h3 className="sm:col-span-2 font-montserrat font-bold">{participants.some((participant) => participant.nis === participantForm.nis) ? "Edit peserta" : "Tambah peserta"}</h3>
+                {([
+                  ["nis", "NIS", "text"],
+                  ["nama_lengkap", "Nama lengkap", "text"],
+                  ["no_wa", "Nomor WhatsApp", "tel"],
+                  ["email", "Email", "email"],
+                ] as const).map(([key, label, type]) => (
+                  <label key={key} className="grid gap-1 text-sm font-semibold">
+                    {label}
+                    <input required type={type} disabled={key === "nis" && participants.some((participant) => participant.nis === participantForm.nis)} value={participantForm[key]} onChange={(event) => setParticipantForm({ ...participantForm, [key]: event.target.value })} className="min-h-10 border border-[#d7cbbb] bg-white px-3 py-2 font-normal" />
+                  </label>
+                ))}
+                {([
+                  ["kelas", "Kelas", classOptions],
+                  ["rumpun_ilmu_1", "Pilihan 1", rumpunOptions],
+                  ["rumpun_ilmu_2", "Pilihan 2", rumpunOptions],
+                ] as const).map(([key, label, options]) => (
+                  <label key={key} className="grid gap-1 text-sm font-semibold">
+                    {label}
+                    <select required value={participantForm[key]} onChange={(event) => setParticipantForm({ ...participantForm, [key]: event.target.value })} className="min-h-10 border border-[#d7cbbb] bg-white px-3 py-2 font-normal">
+                      <option value="" disabled>Pilih {label.toLowerCase()}</option>
+                      {options.filter((option) => option.active || option.label === participantForm[key]).map((option) => <option key={option.id} value={option.label}>{option.label}</option>)}
+                    </select>
+                  </label>
+                ))}
+                <div className="flex gap-2 sm:col-span-2">
+                  <button type="submit" disabled={savingParticipant} className="bg-[#281311] px-4 py-2 text-sm font-semibold text-[#f0c77c] disabled:opacity-60">{savingParticipant ? "Menyimpan…" : "Simpan"}</button>
+                  <button type="button" onClick={() => setParticipantForm(null)} className="border border-[#281311]/25 px-4 py-2 text-sm font-semibold">Batal</button>
+                </div>
+              </form>
+            )}
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1050px] border-collapse text-left text-sm">
                 <thead className="bg-[#f4ecdc] text-xs uppercase tracking-wide text-[#655b51]">
-                  <tr>{["NIS", "Nama", "Kelas", "WhatsApp", "Email", "Pilihan 1", "Pilihan 2", "Pas foto", "Waktu daftar"].map((heading) => <th key={heading} className="px-4 py-3 font-semibold">{heading}</th>)}</tr>
+                  <tr>{["NIS", "Nama", "Kelas", "WhatsApp", "Email", "Pilihan 1", "Pilihan 2", "Pas foto", "Waktu daftar", "Aksi"].map((heading) => <th key={heading} className="px-4 py-3 font-semibold">{heading}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-[#281311]/10">
                   {participants.map((person) => (
@@ -297,9 +394,15 @@ export default function AdminDashboardClient() {
                       <td className="max-w-48 px-4 py-3">{person.rumpun_ilmu_2}</td>
                       <td className="px-4 py-3">{person.pas_foto ? <a href={`/api/admin/foto?nis=${encodeURIComponent(person.nis)}`} target="_blank" rel="noreferrer" className="font-semibold text-[#714526] underline underline-offset-2">Lihat</a> : "—"}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-xs text-[#655b51]">{dateFormat.format(new Date(person.created_at))}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex gap-2">
+                          <button type="button" onClick={() => startParticipantForm(person)} className="font-semibold text-[#714526] underline underline-offset-2">Edit</button>
+                          <button type="button" onClick={() => void deleteParticipant(person.nis)} className="font-semibold text-[#a33126] underline underline-offset-2">Hapus</button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
-                  {!participants.length && <tr><td colSpan={9} className="px-4 py-10 text-center text-[#655b51]">Belum ada peserta terdaftar.</td></tr>}
+                  {!participants.length && <tr><td colSpan={10} className="px-4 py-10 text-center text-[#655b51]">Belum ada peserta terdaftar.</td></tr>}
                 </tbody>
               </table>
             </div>

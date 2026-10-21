@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import Link from "next/link";
 
 export default function DaftarKonsentrasi() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -77,9 +76,6 @@ export default function DaftarKonsentrasi() {
               ? "Pilihan rumpun ilmumu sudah tersimpan. Terima kasih!"
               : "Mohon tunggu, data sedang disimpan."}
           </p>
-          {submitted && (
-            <Link className="mt-3 inline-block font-semibold text-[#714526] underline underline-offset-4" href="/">Kembali ke beranda</Link>
-          )}
         </div>
       </main>
     );
