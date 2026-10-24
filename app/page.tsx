@@ -1,5 +1,9 @@
-import { redirect } from "next/navigation";
+import Hero from "./section/Hero";
 
-export default function HomePage() {
-  redirect("/konsentrasi/daftar");
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+    </main>
+  );
 }

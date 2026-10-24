@@ -1,0 +1,413 @@
+/* Hero template: mobile first, CSS murni (tanpa Tailwind, tanpa JS untuk gerak) */
+/* Cari kata "SETEL" untuk menemukan semua bagian yang perlu disesuaikan */
+
+/* ---------- Ruang scroll + panggung yang menempel ---------- */
+.hero-scroll {
+  position: relative;
+  /* SETEL: panjang scroll total. Harus selaras dengan animation-range di @supports
+     (nilai kedua = height ini dikurangi 100svh) dan --shift foreground di Hero.tsx */
+  height: 250svh;
+}
+
+.hero {
+  /* SETEL: angkat batu dan foreground dari dasar. Ada celah di dasar layar HP, ubah di sini */
+  --lift: 1.5rem;
+  /* SETEL: cadangan tinggi landscape di bawah dasar. Naikkan jika ada celah saat parallax */
+  --overscan: 3rem;
+
+  position: sticky; /* jangan beri overflow hidden/auto pada parent mana pun */
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  pointer-events: auto;
+  /* SETEL: gradient ini hanya cadangan. Hapus setelah layer sky punya gambar */
+  background: linear-gradient(to bottom, #ffd2c6, #ffffff);
+}
+
+/* ---------- Dasar semua layer ---------- */
+.sky,
+.land,
+.wall {
+  position: absolute;
+  max-width: none;
+  user-select: none;
+}
+
+.parallax {
+  will-change: transform;
+}
+
+.stage,
+.rock,
+.wall,
+.fore {
+  will-change: transform, translate;
+}
+
+/* ---------- 1. Langit ---------- */
+.sky {
+  /* SETEL: kelebihan gambar di tiap sisi. Naikkan jika shift sky di Hero.tsx dibesarkan */
+  inset: -5rem;
+  width: calc(100% + 10rem);
+  height: calc(100% + 10rem);
+  object-fit: cover;
+  object-position: center bottom;
+}
+.sky.is-ph {
+  background: transparent; /* placeholder: pakai gradient .hero */
+}
+
+/* ---------- 2. Panggung landscape (4 layer) ---------- */
+.stage {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  bottom: 0;
+  /* SETEL: makin besar angka 130svh, scene makin zoom dan sisi kiri kanan makin terpotong di HP */
+  width: max(100%, 130svh);
+  /* SETEL: harus sama dengan rasio panggung. Rasio gambar tiap landscape diatur di --land-w */
+  aspect-ratio: 8 / 5;
+  translate: -50% 0; /* properti translate terpisah, tidak bentrok dengan transform parallax */
+}
+
+/* Tiap landscape diatur lewat 3 variabel di blok .land--1 sampai .land--4:
+   --land-x : geser horizontal dari tengah panggung (positif = ke kanan), satuan % lebar panggung
+   --land-y : geser vertikal dari dasar panggung (positif = naik), satuan % tinggi panggung
+   --land-w : lebar layer relatif ke lebar panggung (100% = selebar panggung), tinggi mengikuti rasio gambar
+   Layer melebar dari titik tengahnya, jadi memperbesar --land-w tidak menggeser posisi tengah */
+.land {
+  left: calc(50% + var(--land-x, 0%));
+  bottom: calc(var(--land-y, 0%) - var(--overscan));
+  width: var(--land-w, 100%);
+  height: auto;
+  translate: -50% 0;
+}
+
+/* Placeholder landscape. Boleh dihapus setelah semua layer punya src */
+.land.is-ph {
+  height: var(--h);
+  background: var(--ph);
+  clip-path: var(--clip);
+}
+
+/* landscape-4: paling belakang */
+.land--4 {
+  /* SETEL: posisi dan ukuran landscape-4 */
+  --land-x: 0%;
+  --land-y: 0%;
+  --land-w: 100%;
+  --hover-x: calc(var(--pointer-x, 0px) * 0.2);
+  --hover-y: calc(var(--pointer-y, 0px) * 0.2);
+
+  --h: 76%;
+  --ph: #a9d3e3;
+  --clip: polygon(0 52%, 14% 36%, 30% 50%, 48% 28%, 66% 46%, 84% 30%, 100% 44%, 100% 100%, 0 100%);
+}
+/* landscape-3 */
+.land--3 {
+  /* SETEL: posisi dan ukuran landscape-3 */
+  --land-x: 0%;
+  --land-y: 0%;
+  --land-w: 100%;
+  --hover-x: calc(var(--pointer-x, 0px) * 0.35);
+  --hover-y: calc(var(--pointer-y, 0px) * 0.35);
+
+  --h: 62%;
+  --ph: #8cc4da;
+  --clip: polygon(0 48%, 18% 60%, 36% 34%, 56% 56%, 76% 32%, 100% 50%, 100% 100%, 0 100%);
+}
+/* landscape-2 */
+.land--2 {
+  /* SETEL: posisi dan ukuran landscape-2 */
+  --land-x: 0%;
+  --land-y: 0%;
+  --land-w: 85%;
+  --hover-x: calc(var(--pointer-x, 0px) * 0.5);
+  --hover-y: calc(var(--pointer-y, 0px) * 0.5);
+
+  --h: auto;
+  --ph: #5fa3be;
+  --clip: polygon(0 42%, 20% 26%, 40% 46%, 62% 22%, 82% 42%, 100% 30%, 100% 100%, 0 100%);
+}
+/* landscape-1: paling depan */
+.land--1 {
+  /* SETEL: posisi dan ukuran landscape-1 */
+  --land-x: 0%;
+  --land-y: 0%;
+  --land-w: 100%;
+  --hover-x: calc(var(--pointer-x, 0px) * 0.7);
+  --hover-y: calc(var(--pointer-y, 0px) * 0.7);
+
+  --h: 36%;
+  --ph: #3b7f9c;
+  --clip: polygon(0 40%, 22% 24%, 42% 44%, 63% 20%, 84% 40%, 100% 28%, 100% 100%, 0 100%);
+}
+
+/* ---------- 3. Batu + karakter Rive ---------- */
+.rock {
+  /* SETEL: batu tertutup foreground, naikkan. Batu melayang di atas foreground, turunkan */
+  --rock-raise: 0.1svh;
+
+  position: absolute;
+  z-index: 30;
+  left: 50%;
+  translate: calc(-50% + var(--pointer-x, 0px) * 0.85) calc(var(--pointer-y, 0px) * 0.85);
+  bottom: calc(var(--lift) + var(--rock-raise));
+  margin-bottom: 2.4%; /* SETEL: jarak tambahan dari dasar, setel setelah --rock-raise */
+  width: 90%; /* SETEL: ukuran batu di HP */
+  max-width: 27rem;
+  container-type: inline-size; /* cqw = 1% lebar batu */
+}
+.rock__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.rock__img.is-ph {
+  aspect-ratio: 1700 / 464;
+  background: #cfd8d3;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* Karakter Rive: kanvas berdiri di atas batu, tepi bawah kanvas = permukaan batu */
+.rock__char {
+  /* SETEL: lebar kanvas relatif ke lebar batu */
+  --char-w: 56%;
+  /* SETEL: tinggi permukaan batu diukur dari dasar gambar batu.
+     Kaki tenggelam, naikkan (misal 70%). Karakter melayang, turunkan */
+  --char-foot: 60%;
+
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  bottom: var(--char-foot);
+  width: var(--char-w);
+  aspect-ratio: 1; /* SETEL: samakan dengan rasio artboard Rive (lebar / tinggi), contoh 600x800 jadi 3 / 4 */
+}
+
+/* ---------- 4. Dinding ---------- */
+.wall {
+  z-index: 40;
+  top: 0px; /* SETEL: menutup celah tipis di tepi atas dan samping */
+  height: calc(100% + 10px);
+  width: 100%;
+  object-fit: cover; /* SETEL: jika dinding terlalu lebar, batasi dengan width: 70vw; object-fit: cover */
+}
+.wall--l {
+  left: -50%;
+  --hover-x: calc(var(--pointer-x, 0px) * 0.25);
+  --hover-y: calc(var(--pointer-y, 0px) * 0.25);
+}
+.wall--r {
+  right: -45%;
+  --hover-x: calc(var(--pointer-x, 0px) * 0.25);
+  --hover-y: calc(var(--pointer-y, 0px) * 0.25);
+}
+.wall.is-ph {
+  width: 16vw;
+  background: linear-gradient(to right, #0d1a1f, rgb(13 26 31 / 0));
+}
+.wall--r.is-ph {
+  background: linear-gradient(to left, #0d1a1f, rgb(13 26 31 / 0));
+}
+
+/* ---------- 5. Konten tengah (teks) ---------- */
+.title {
+  position: absolute;
+  z-index: 50;
+  inset-inline: 0;
+  top: 46%; /* SETEL: posisi vertikal teks. Cek di layar pendek (360x640) */
+  translate: 0 -50%;
+  display: flex;
+  justify-content: center;
+}
+.title__bob {
+  will-change: transform;
+  animation: bob 4s ease-in-out infinite; /* SETEL: kecepatan melayang (4s) */
+}
+.title__box {
+  container-type: inline-size; /* cqw = 1% lebar kotak ini, teks ikut skala */
+  width: min(72vw, 18rem); /* SETEL: lebar blok teks di HP */
+  text-align: center;
+  pointer-events: auto;
+}
+.title__h1 {
+  margin: 0;
+  font-size: 45cqw; /* SETEL: ukuran judul, ubah angka cqw bukan px */
+  line-height: 0.8;
+  font-weight: 800;
+  color: #1F1708; /* SETEL: warna teks, cek kontras dengan langit asli */
+  text-shadow: 0 0 1cqw rgb(255 255 255 / 0.7), 0 0 3cqw rgb(255 255 255 / 0.5);
+  font-family: "Arexa";
+}
+.title__sub {
+  margin: 1cqw 0 0;
+  font-size: 7.5cqw; /* SETEL: ukuran subjudul */
+  color: #1F1708;
+  font-family: "Kastemo";
+}
+.title__cta {
+  display: inline-block;
+  margin-top: 7cqw;
+  padding: 3cqw 9cqw;
+  border-radius: 0px;
+  font-size: 6cqw; /* SETEL: ukuran tombol */
+  font-weight: 700;
+  text-decoration: none;
+  font-family: "Kastemo";
+}
+.title__cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ---------- 6. Foreground + blok hitam ---------- */
+.fore {
+  position: absolute;
+  z-index: 40;
+  left: -1.25rem; /* SETEL: ada celah di tepi saat parallax, perbesar */
+  right: -1.25rem;
+  bottom: calc(var(--lift) - 120svh); /* gambar duduk di dasar, blok hitam mengisi 120svh di bawahnya */
+  --hover-x: calc(var(--pointer-x, 0px) * 0.9);
+  --hover-y: calc(var(--pointer-y, 0px) * 0.9);
+}
+.fore::after {
+  content: "";
+  display: block;
+  height: 120svh;
+  background: #000;
+}
+.fore__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: -3px; /* SETEL: masih ada garis tipis, ubah ke -5px */
+}
+.fore__img.is-ph {
+  height: 10svh;
+  background: #000;
+  clip-path: polygon(0 40%, 15% 20%, 35% 38%, 55% 10%, 75% 30%, 100% 15%, 100% 100%, 0 100%);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes bob {
+  50% {
+    transform: translateY(-2%); /* SETEL: tinggi goyang */
+  }
+}
+@keyframes parallax {
+  from {
+    transform: translate3d(
+      var(--hover-x, 0px),
+      var(--hover-y, 0px),
+      0
+    );
+  }
+  to {
+    transform: translate3d(
+      calc(var(--shift-x, 0px) + var(--hover-x, 0px)),
+      calc(var(--shift, 0px) + var(--hover-y, 0px)),
+      0
+    );
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---------- Gerak mengikuti scroll (tanpa JS) ---------- */
+/* Browser yang belum mendukung akan menampilkan hero statis */
+@supports (animation-timeline: scroll()) {
+  .parallax {
+    animation: parallax linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 150svh; /* SETEL: selaras dengan .hero-scroll (tinggi dikurangi 100svh) */
+  }
+  .title {
+    animation: fade-out linear both;
+    animation-timeline: scroll(root);
+    animation-range: 10svh 70svh; /* SETEL: kapan teks mulai dan selesai memudar */
+  }
+}
+
+/* ---------- Breakpoint (mobile first, hanya menambah) ---------- */
+/* SETEL: gambar srcMobile berhenti di 767px, sedangkan breakpoint ini mulai 640px */
+@media (min-width: 640px) {
+  .hero {
+    --lift: 0px;
+  }
+  .title__box {
+    width: 26rem;
+  }
+  .rock {
+    width: 72%;
+    max-width: none;
+  }
+  /* SETEL: posisi dan ukuran tiap landscape di tablet. Nilai awal sama dengan versi HP,
+     hapus baris yang tidak perlu diubah */
+  .land--4 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+  .land--3 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+  .land--2 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+  .land--1 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+}
+@media (min-width: 1024px) {
+  .title__box {
+    width: 32rem;
+  }
+  .rock {
+    width: 50%;
+  }
+  /* SETEL: posisi dan ukuran tiap landscape di laptop */
+  .land--4 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+  .land--3 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+  .land--2 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+  .land--1 {
+    --land-x: 0%;
+    --land-y: 0%;
+    --land-w: 100%;
+  }
+}
+@media (min-width: 1280px) {
+  .rock {
+    width: 39%;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .title__bob,
+  .parallax,
+  .title {
+    animation: none;
+  }
+}
