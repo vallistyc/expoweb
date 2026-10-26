@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>IMPLEMENTASI-UI-PILAR.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="panduan-implementasi-ui-3-pilar-expo-campus">Panduan Implementasi UI 3 Pilar Expo Campus</h1>
+<p>Dokumen ini adalah panduan lengkap untuk membuat UI seperti desain referensi:</p>
+<ol>
+<li>Tiga flag ditampilkan berdampingan: Bisnis, Kuliah, dan Kerja.</li>
+<li>User memilih salah satu flag dengan klik.</li>
+<li>Flag yang dipilih tetap berwarna.</li>
+<li>Flag lain berubah menjadi hitam-putih.</li>
+<li>Judul dan deskripsi pilar yang dipilih berubah.</li>
+<li>Empat box program ditampilkan di bawahnya.</li>
+<li>Posisi empat box dapat berbeda untuk setiap pilar.</li>
+<li>Konten program ditampilkan di atas gambar box.</li>
+</ol>
+<p>Panduan ini menggunakan:</p>
+<ul>
+<li>Next.js App Router.</li>
+<li>React dan TypeScript.</li>
+<li><code>next/image</code>.</li>
+<li>CSS biasa.</li>
+<li>Data statis dari file TypeScript.</li>
+</ul>
+<h2 id="1-konsep-utama">1. Konsep utama</h2>
+<p>UI ini sebaiknya dibuat sebagai satu komponen interaktif, bukan tiga halaman
+terpisah.</p>
+<pre class="hljs"><code><div>User klik flag
+        |
+        v
+activePillar berubah
+        |
+        +--&gt; flag aktif tetap berwarna
+        +--&gt; flag lain menjadi grayscale
+        +--&gt; judul dan deskripsi berubah
+        +--&gt; empat program berubah
+        +--&gt; layout program berubah
+</div></code></pre>
+<p>State yang diperlukan hanya satu:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> [activePillar, setActivePillar] = useState&lt;<span class="hljs-title class_">PillarId</span>&gt;(<span class="hljs-string">&quot;kuliah&quot;</span>);
+</div></code></pre>
+<p><code>activePillar</code> menyimpan id pilar yang sedang dipilih.</p>
+<h2 id="2-struktur-file">2. Struktur file</h2>
+<p>Gunakan struktur berikut:</p>
+<pre class="hljs"><code><div>app/
+├── component/
+│   ├── Flag.tsx
+│   ├── ProgramBox.tsx
+│   └── pilar-section.css
+├── data/
+│   └── pilar.ts
+└── section/
+    └── About.tsx
+
+public/
+├── about-top.png
+├── box.webp
+├── flag-bisnis.png
+├── flag-kuliah.png
+└── flag-kerja.png
+</div></code></pre>
+<p>Asset flag pada project ini sudah tersedia di folder <code>public</code>. Path dari
+folder <code>public</code> selalu ditulis mulai dari <code>/</code>, bukan <code>public/</code>.</p>
+<p>Benar:</p>
+<pre class="hljs"><code><div>src=<span class="hljs-string">&quot;/flag-bisnis.png&quot;</span>
+</div></code></pre>
+<p>Salah:</p>
+<pre class="hljs"><code><div>src=<span class="hljs-string">&quot;public/flag-bisnis.png&quot;</span>
+</div></code></pre>
+<h2 id="3-menentukan-tipe-data-pilar">3. Menentukan tipe data pilar</h2>
+<p>Edit file <code>app/data/pilar.ts</code> dan isi dengan kode berikut:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">PillarId</span> = <span class="hljs-string">&quot;bisnis&quot;</span> | <span class="hljs-string">&quot;kuliah&quot;</span> | <span class="hljs-string">&quot;kerja&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">Program</span> = {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">description</span>: <span class="hljs-built_in">string</span>;
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">Pillar</span> = {
+  <span class="hljs-attr">id</span>: <span class="hljs-title class_">PillarId</span>;
+  <span class="hljs-attr">flagSrc</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">flagAlt</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">description</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">programs</span>: <span class="hljs-title class_">Program</span>[];
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">pillars</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-title class_">PillarId</span>, <span class="hljs-title class_">Pillar</span>&gt; = {
+  <span class="hljs-attr">bisnis</span>: {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;bisnis&quot;</span>,
+    <span class="hljs-attr">flagSrc</span>: <span class="hljs-string">&quot;/flag-bisnis.png&quot;</span>,
+    <span class="hljs-attr">flagAlt</span>: <span class="hljs-string">&quot;Flag Pilar Bisnis&quot;</span>,
+    <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;PILAR BISNIS&quot;</span>,
+    <span class="hljs-attr">description</span>:
+      <span class="hljs-string">&quot;Pilar bisnis menyuguhkan kegiatan edukasi dengan maksud mempersiapkan siswa untuk menghadapi karir bisnis atau kewirausahaan.&quot;</span>,
+    <span class="hljs-attr">programs</span>: [
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;seminar-bisnis&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;SEMINAR BISNIS&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Seminar ini berfokus untuk mempersiapkan siswa agar berani memulai dan mengembangkan bisnis.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;business-plan&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;BUSINESS PLAN&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta belajar menyusun ide bisnis, target pasar, strategi, dan rencana pengembangan usaha.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;business-challenge&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;BUSINESS CHALLENGE&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta menyelesaikan tantangan bisnis secara berkelompok dengan menerapkan ide dan strategi.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;business-expo&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;BUSINESS EXPO&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta mempresentasikan hasil ide bisnis kepada pengunjung dan mendapatkan masukan.&quot;</span>,
+      },
+    ],
+  },
+
+  <span class="hljs-attr">kuliah</span>: {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;kuliah&quot;</span>,
+    <span class="hljs-attr">flagSrc</span>: <span class="hljs-string">&quot;/flag-kuliah.png&quot;</span>,
+    <span class="hljs-attr">flagAlt</span>: <span class="hljs-string">&quot;Flag Pilar Kuliah&quot;</span>,
+    <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;PILAR KULIAH&quot;</span>,
+    <span class="hljs-attr">description</span>:
+      <span class="hljs-string">&quot;Pilar kuliah menyuguhkan kegiatan edukasi untuk mempersiapkan siswa menghadapi karir perkuliahan.&quot;</span>,
+    <span class="hljs-attr">programs</span>: [
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;mini-job-fair&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;MINI JOB FAIR&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta memperoleh gambaran tentang pilihan jurusan dan peluang karir setelah kuliah.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;campus-experience&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;CAMPUS EXPERIENCE&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta mengenal suasana kampus dan mendapatkan informasi dari mahasiswa atau alumni.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;study-plan&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;STUDY PLAN&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta menyusun rencana belajar dan persiapan untuk mencapai pilihan jurusan.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;scholarship-info&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;SCHOLARSHIP INFO&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta memperoleh informasi tentang beasiswa dan persyaratan yang perlu dipersiapkan.&quot;</span>,
+      },
+    ],
+  },
+
+  <span class="hljs-attr">kerja</span>: {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;kerja&quot;</span>,
+    <span class="hljs-attr">flagSrc</span>: <span class="hljs-string">&quot;/flag-kerja.png&quot;</span>,
+    <span class="hljs-attr">flagAlt</span>: <span class="hljs-string">&quot;Flag Pilar Kerja&quot;</span>,
+    <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;PILAR KERJA&quot;</span>,
+    <span class="hljs-attr">description</span>:
+      <span class="hljs-string">&quot;Pilar kerja menyuguhkan kegiatan edukasi untuk mempersiapkan siswa menghadapi dunia kerja.&quot;</span>,
+    <span class="hljs-attr">programs</span>: [
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;career-talk&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;CAREER TALK&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta mendengarkan pengalaman dan wawasan dari orang yang sudah bekerja.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;cv-workshop&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;CV WORKSHOP&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta belajar membuat CV yang rapi, jelas, dan sesuai dengan tujuan karir.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;interview-practice&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;INTERVIEW PRACTICE&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta berlatih menjawab pertanyaan wawancara dan menyampaikan kelebihan diri.&quot;</span>,
+      },
+      {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;workplace-insight&quot;</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;WORKPLACE INSIGHT&quot;</span>,
+        <span class="hljs-attr">description</span>:
+          <span class="hljs-string">&quot;Peserta memahami etika, kebiasaan, dan ekspektasi yang umum di lingkungan kerja.&quot;</span>,
+      },
+    ],
+  },
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> pillarList = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(pillars);
+</div></code></pre>
+<h3 id="catatan-data">Catatan data</h3>
+<ul>
+<li>Setiap pilar wajib memiliki tepat empat object di <code>programs</code>.</li>
+<li><code>id</code> setiap program harus unik.</li>
+<li><code>title</code> adalah teks yang muncul pada box.</li>
+<li><code>description</code> adalah isi teks pada box.</li>
+<li>Jika desain membutuhkan icon atau gambar program, tambahkan property <code>image</code>
+pada type <code>Program</code> dan setiap datanya.</li>
+</ul>
+<h2 id="4-membuat-komponen-flag">4. Membuat komponen <code>Flag</code></h2>
+<p>Edit <code>app/component/Flag.tsx</code> menjadi:</p>
+<pre class="hljs"><code><div><span class="hljs-string">&quot;use client&quot;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Image</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/image&quot;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">FlagProps</span> = {
+  <span class="hljs-attr">src</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">alt</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">width</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">height</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">isActive</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">onClick</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Flag</span>(<span class="hljs-params">{
+  src,
+  alt,
+  width,
+  height,
+  isActive,
+  onClick,
+}: <span class="hljs-title class_">FlagProps</span></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span>
+      <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">flag</span> ${<span class="hljs-attr">isActive</span> ? &quot;<span class="hljs-attr">flag-active</span>&quot; <span class="hljs-attr">:</span> &quot;<span class="hljs-attr">flag-inactive</span>&quot;}`}
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>
+      <span class="hljs-attr">aria-pressed</span>=<span class="hljs-string">{isActive}</span>
+      <span class="hljs-attr">aria-label</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">Pilih</span> ${<span class="hljs-attr">alt</span>}`}
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+        <span class="hljs-attr">src</span>=<span class="hljs-string">{src}</span>
+        <span class="hljs-attr">alt</span>=<span class="hljs-string">{alt}</span>
+        <span class="hljs-attr">width</span>=<span class="hljs-string">{width}</span>
+        <span class="hljs-attr">height</span>=<span class="hljs-string">{height}</span>
+        <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;flag__image&quot;</span>
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}
+</div></code></pre>
+<h3 id="hal-penting-pada-komponen-flag">Hal penting pada komponen <code>Flag</code></h3>
+<ul>
+<li><code>&quot;use client&quot;</code> harus berada di baris pertama karena komponen memiliki event
+klik dan dipakai oleh komponen yang menggunakan state.</li>
+<li>Gunakan <code>button</code>, bukan <code>div</code>, supaya dapat diklik dengan keyboard.</li>
+<li><code>isActive</code> menentukan class aktif atau tidak aktif.</li>
+<li><code>aria-pressed</code> memberi informasi status kepada screen reader.</li>
+<li>Gunakan <code>Image</code> dari <code>next/image</code>, bukan string <code>public/...</code>.</li>
+</ul>
+<h2 id="5-membuat-komponen-programbox">5. Membuat komponen <code>ProgramBox</code></h2>
+<p>Program box memiliki gambar sebagai background dan teks di atas gambar.
+Karena itu parent harus <code>position: relative</code>, gambar menggunakan <code>fill</code>, dan
+konten menggunakan <code>z-index</code> yang lebih tinggi.</p>
+<p>Edit <code>app/component/ProgramBox.tsx</code> menjadi:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> <span class="hljs-title class_">Image</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/image&quot;</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">ProgramBoxProps</span> = {
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">description</span>: <span class="hljs-built_in">string</span>;
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ProgramBox</span>(<span class="hljs-params">{
+  title,
+  description,
+}: <span class="hljs-title class_">ProgramBoxProps</span></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">article</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;program-box&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+        <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;program-box__background&quot;</span>
+        <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/box.webp&quot;</span>
+        <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;&quot;</span>
+        <span class="hljs-attr">fill</span>
+        <span class="hljs-attr">sizes</span>=<span class="hljs-string">&quot;(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw&quot;</span>
+      /&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;program-box__content&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{title}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{description}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span></span>
+  );
+}
+</div></code></pre>
+<h3 id="mengapa-alt-pada-gambar-box">Mengapa <code>alt=&quot;&quot;</code> pada gambar box?</h3>
+<p>Pada contoh ini, <code>box.webp</code> hanya merupakan dekorasi/background. Informasi
+pentingnya sudah tersedia di <code>title</code> dan <code>description</code>. Karena itu gambar
+dekorasi tidak perlu dibacakan ulang oleh screen reader.</p>
+<p>Jika gambar berisi informasi penting, ganti <code>alt=&quot;&quot;</code> dengan deskripsi yang
+sesuai.</p>
+<h3 id="kesalahan-umum-pada-image">Kesalahan umum pada <code>Image</code></h3>
+<p>Jangan memakai <code>width</code> dan <code>height</code> sekaligus <code>fill</code> pada instance yang sama.
+Pilih salah satu pola:</p>
+<pre class="hljs"><code><div>&lt;<span class="hljs-title class_">Image</span> src=<span class="hljs-string">&quot;/box.webp&quot;</span> alt=<span class="hljs-string">&quot;&quot;</span> width={<span class="hljs-number">300</span>} height={<span class="hljs-number">180</span>} /&gt;
+</div></code></pre>
+<p>atau:</p>
+<pre class="hljs"><code><div>&lt;<span class="hljs-title class_">Image</span> src=<span class="hljs-string">&quot;/box.webp&quot;</span> alt=<span class="hljs-string">&quot;&quot;</span> fill sizes=<span class="hljs-string">&quot;100vw&quot;</span> /&gt;
+</div></code></pre>
+<p>Pola <code>fill</code> membutuhkan parent dengan <code>position: relative</code> dan tinggi yang
+jelas.</p>
+<h2 id="6-membuat-section-interaktif">6. Membuat section interaktif</h2>
+<p>Edit <code>app/section/About.tsx</code> menjadi:</p>
+<pre class="hljs"><code><div><span class="hljs-string">&quot;use client&quot;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Image</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/image&quot;</span>;
+<span class="hljs-keyword">import</span> { useState } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Flag</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../component/Flag&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">ProgramBox</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../component/ProgramBox&quot;</span>;
+<span class="hljs-keyword">import</span> { pillarList, pillars, <span class="hljs-keyword">type</span> <span class="hljs-title class_">PillarId</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../data/pilar&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;../component/pilar-section.css&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">About</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [activePillar, setActivePillar] = useState&lt;<span class="hljs-title class_">PillarId</span>&gt;(<span class="hljs-string">&quot;kuliah&quot;</span>);
+  <span class="hljs-keyword">const</span> selectedPillar = pillars[activePillar];
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;pilar-section&quot;</span> <span class="hljs-attr">aria-labelledby</span>=<span class="hljs-string">&quot;pilar-title&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;pilar-section__heading&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;pilar-title&quot;</span>&gt;</span>
+          Apa yang Baru di
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>EXPO CAMPUS?<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Prinsip 3 Pilar<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;pilar-section__flags&quot;</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Pilih pilar&quot;</span>&gt;</span>
+        {pillarList.map((pillar) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">Flag</span>
+            <span class="hljs-attr">key</span>=<span class="hljs-string">{pillar.id}</span>
+            <span class="hljs-attr">src</span>=<span class="hljs-string">{pillar.flagSrc}</span>
+            <span class="hljs-attr">alt</span>=<span class="hljs-string">{pillar.flagAlt}</span>
+            <span class="hljs-attr">width</span>=<span class="hljs-string">{300}</span>
+            <span class="hljs-attr">height</span>=<span class="hljs-string">{500}</span>
+            <span class="hljs-attr">isActive</span>=<span class="hljs-string">{activePillar</span> === <span class="hljs-string">pillar.id}</span>
+            <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setActivePillar(pillar.id)}
+          /&gt;
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;pilar-section__description&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>{selectedPillar.title}<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>{&quot; &quot;}
+          {selectedPillar.description}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;pilar-section__program-area&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+          <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;pilar-section__background&quot;</span>
+          <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/about-top.png&quot;</span>
+          <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;&quot;</span>
+          <span class="hljs-attr">fill</span>
+          <span class="hljs-attr">sizes</span>=<span class="hljs-string">&quot;(max-width: 768px) 100vw, 900px&quot;</span>
+        /&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+          <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">program-grid</span> <span class="hljs-attr">program-grid--</span>${<span class="hljs-attr">activePillar</span>}`}
+          <span class="hljs-attr">key</span>=<span class="hljs-string">{activePillar}</span>
+        &gt;</span>
+          {selectedPillar.programs.map((program) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">ProgramBox</span>
+              <span class="hljs-attr">key</span>=<span class="hljs-string">{program.id}</span>
+              <span class="hljs-attr">title</span>=<span class="hljs-string">{program.title}</span>
+              <span class="hljs-attr">description</span>=<span class="hljs-string">{program.description}</span>
+            /&gt;</span>
+          ))}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span></span>
+  );
+}
+</div></code></pre>
+<h3 id="posisi-penting-usestate">Posisi penting <code>useState</code></h3>
+<p><code>useState</code> harus berada di dalam function component:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">About</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [activePillar, setActivePillar] = useState&lt;<span class="hljs-title class_">PillarId</span>&gt;(<span class="hljs-string">&quot;kuliah&quot;</span>);
+}
+</div></code></pre>
+<p>Jangan menulis seperti ini di luar component:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> [activePillar, setActivePillar] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;kuliah&quot;</span>);
+</div></code></pre>
+<p>React Hook tidak boleh dipanggil pada level module.</p>
+<h2 id="7-menulis-css-overlay-dan-layout">7. Menulis CSS overlay dan layout</h2>
+<p>Buat file <code>app/component/pilar-section.css</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.pilar-section</span> {
+  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">100vh</span>;
+  <span class="hljs-attribute">overflow</span>: hidden;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">64px</span> <span class="hljs-number">24px</span> <span class="hljs-number">96px</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-number">#160602</span>;
+}
+
+<span class="hljs-selector-class">.pilar-section__heading</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">2</span>;
+  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">760px</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+
+<span class="hljs-selector-class">.pilar-section__heading</span> <span class="hljs-selector-tag">h1</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#efc67b</span>;
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-built_in">var</span>(--font-kastemo), serif;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-built_in">clamp</span>(<span class="hljs-number">1.25rem</span>, <span class="hljs-number">3vw</span>, <span class="hljs-number">2rem</span>);
+  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">400</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">1.2</span>;
+}
+
+<span class="hljs-selector-class">.pilar-section__heading</span> <span class="hljs-selector-tag">h1</span> <span class="hljs-selector-tag">span</span> {
+  <span class="hljs-attribute">display</span>: block;
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-built_in">var</span>(--font-arexa), serif;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-built_in">clamp</span>(<span class="hljs-number">2.5rem</span>, <span class="hljs-number">7vw</span>, <span class="hljs-number">5rem</span>);
+}
+
+<span class="hljs-selector-class">.pilar-section__heading</span> <span class="hljs-selector-tag">h2</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">16px</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#efc67b</span>;
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-built_in">var</span>(--font-fraunces), serif;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.25rem</span>;
+  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">400</span>;
+}
+
+<span class="hljs-selector-class">.pilar-section__flags</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">2</span>;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">align-items</span>: flex-start;
+  <span class="hljs-attribute">justify-content</span>: center;
+  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">900px</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">40px</span> auto <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-selector-class">.flag</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">display</span>: block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-built_in">min</span>(<span class="hljs-number">31vw</span>, <span class="hljs-number">300px</span>);
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> -<span class="hljs-number">12px</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">background</span>: transparent;
+  <span class="hljs-attribute">cursor</span>: pointer;
+  <span class="hljs-attribute">transition</span>:
+    filter <span class="hljs-number">300ms</span> ease,
+    opacity <span class="hljs-number">300ms</span> ease,
+    transform <span class="hljs-number">300ms</span> ease;
+}
+
+<span class="hljs-selector-class">.flag</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">1</span>) {
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-selector-class">.flag</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">2</span>) {
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">2</span>;
+}
+
+<span class="hljs-selector-class">.flag</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">3</span>) {
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-selector-class">.flag</span><span class="hljs-selector-pseudo">:hover</span>,
+<span class="hljs-selector-class">.flag</span><span class="hljs-selector-pseudo">:focus-visible</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(-<span class="hljs-number">8px</span>);
+}
+
+<span class="hljs-selector-class">.flag</span><span class="hljs-selector-pseudo">:focus-visible</span> {
+  <span class="hljs-attribute">outline</span>: <span class="hljs-number">3px</span> solid <span class="hljs-number">#efc67b</span>;
+  <span class="hljs-attribute">outline-offset</span>: <span class="hljs-number">4px</span>;
+}
+
+<span class="hljs-selector-class">.flag-active</span> {
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">3</span>;
+  <span class="hljs-attribute">filter</span>: <span class="hljs-built_in">grayscale</span>(<span class="hljs-number">0</span>);
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(-<span class="hljs-number">8px</span>) <span class="hljs-built_in">scale</span>(<span class="hljs-number">1.03</span>);
+}
+
+<span class="hljs-selector-class">.flag-inactive</span> {
+  <span class="hljs-attribute">filter</span>: <span class="hljs-built_in">grayscale</span>(<span class="hljs-number">1</span>);
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0.8</span>;
+}
+
+<span class="hljs-selector-class">.flag__image</span> {
+  <span class="hljs-attribute">display</span>: block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: auto;
+}
+
+<span class="hljs-selector-class">.pilar-section__description</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">2</span>;
+  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">640px</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">32px</span> auto <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-built_in">var</span>(--font-montserrat), sans-serif;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0.9rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">1.6</span>;
+}
+
+<span class="hljs-selector-class">.pilar-section__description</span> <span class="hljs-selector-tag">strong</span> {
+  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">700</span>;
+}
+
+<span class="hljs-selector-class">.pilar-section__program-area</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">900px</span>;
+  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">560px</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">40px</span> auto <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">48px</span> <span class="hljs-number">24px</span>;
+  <span class="hljs-attribute">overflow</span>: hidden;
+}
+
+<span class="hljs-selector-class">.pilar-section__background</span> {
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">object-fit</span>: cover;
+  <span class="hljs-attribute">object-position</span>: center;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0.35</span>;
+}
+
+<span class="hljs-selector-class">.program-grid</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;
+  <span class="hljs-attribute">display</span>: grid;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-number">16px</span>;
+}
+
+<span class="hljs-selector-class">.program-grid--bisnis</span> {
+  <span class="hljs-attribute">grid-template-areas</span>:
+    <span class="hljs-string">&quot;program-1 program-1&quot;</span>
+    <span class="hljs-string">&quot;program-2 program-3&quot;</span>
+    <span class="hljs-string">&quot;program-4 program-4&quot;</span>;
+}
+
+<span class="hljs-selector-class">.program-grid--kuliah</span> {
+  <span class="hljs-attribute">grid-template-areas</span>:
+    <span class="hljs-string">&quot;program-1 program-2&quot;</span>
+    <span class="hljs-string">&quot;program-3 program-3&quot;</span>
+    <span class="hljs-string">&quot;program-4 program-4&quot;</span>;
+}
+
+<span class="hljs-selector-class">.program-grid--kerja</span> {
+  <span class="hljs-attribute">grid-template-areas</span>:
+    <span class="hljs-string">&quot;program-1 program-1&quot;</span>
+    <span class="hljs-string">&quot;program-2 program-3&quot;</span>
+    <span class="hljs-string">&quot;program-4 program-4&quot;</span>;
+}
+
+<span class="hljs-selector-class">.program-grid</span> <span class="hljs-selector-class">.program-box</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">1</span>) {
+  <span class="hljs-attribute">grid-area</span>: program-<span class="hljs-number">1</span>;
+}
+
+<span class="hljs-selector-class">.program-grid</span> <span class="hljs-selector-class">.program-box</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">2</span>) {
+  <span class="hljs-attribute">grid-area</span>: program-<span class="hljs-number">2</span>;
+}
+
+<span class="hljs-selector-class">.program-grid</span> <span class="hljs-selector-class">.program-box</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">3</span>) {
+  <span class="hljs-attribute">grid-area</span>: program-<span class="hljs-number">3</span>;
+}
+
+<span class="hljs-selector-class">.program-grid</span> <span class="hljs-selector-class">.program-box</span><span class="hljs-selector-pseudo">:nth-child</span>(<span class="hljs-number">4</span>) {
+  <span class="hljs-attribute">grid-area</span>: program-<span class="hljs-number">4</span>;
+}
+
+<span class="hljs-selector-class">.program-box</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">overflow</span>: hidden;
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-built_in">rgb</span>(<span class="hljs-number">255</span> <span class="hljs-number">255</span> <span class="hljs-number">255</span> / <span class="hljs-number">25%</span>);
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">8px</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-number">#087ba8</span>;
+}
+
+<span class="hljs-selector-class">.program-box__background</span> {
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">object-fit</span>: cover;
+}
+
+<span class="hljs-selector-class">.program-box__content</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">flex-direction</span>: column;
+  <span class="hljs-attribute">justify-content</span>: flex-end;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">16px</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(
+    to top,
+    <span class="hljs-built_in">rgb</span>(<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> / <span class="hljs-number">75%</span>),
+    <span class="hljs-built_in">rgb</span>(<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> / <span class="hljs-number">10%</span>)
+  );
+}
+
+<span class="hljs-selector-class">.program-box__content</span> <span class="hljs-selector-tag">h3</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-built_in">var</span>(--font-montserrat), sans-serif;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0.75rem</span>;
+  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">700</span>;
+}
+
+<span class="hljs-selector-class">.program-box__content</span> <span class="hljs-selector-tag">p</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">8px</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-built_in">var</span>(--font-montserrat), sans-serif;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0.7rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">1.45</span>;
+}
+
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">640px</span>) {
+  <span class="hljs-selector-class">.pilar-section</span> {
+    <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">12px</span>;
+    <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">12px</span>;
+  }
+
+  <span class="hljs-selector-class">.pilar-section__flags</span> {
+    <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">28px</span>;
+  }
+
+  <span class="hljs-selector-class">.flag</span> {
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">36vw</span>;
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> -<span class="hljs-number">9px</span>;
+  }
+
+  <span class="hljs-selector-class">.pilar-section__program-area</span> {
+    <span class="hljs-attribute">min-height</span>: <span class="hljs-number">660px</span>;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">32px</span> <span class="hljs-number">12px</span>;
+  }
+
+  <span class="hljs-selector-class">.program-grid--bisnis</span>,
+  <span class="hljs-selector-class">.program-grid--kuliah</span>,
+  <span class="hljs-selector-class">.program-grid--kerja</span> {
+    <span class="hljs-attribute">grid-template-areas</span>:
+      <span class="hljs-string">&quot;program-1&quot;</span>
+      <span class="hljs-string">&quot;program-2&quot;</span>
+      <span class="hljs-string">&quot;program-3&quot;</span>
+      <span class="hljs-string">&quot;program-4&quot;</span>;
+  }
+}
+
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.flag</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+}
+</div></code></pre>
+<h3 id="cara-kerja-overlay">Cara kerja overlay</h3>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.pilar-section__program-area</span> {
+  <span class="hljs-attribute">position</span>: relative;
+}
+
+<span class="hljs-selector-class">.pilar-section__background</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-selector-class">.program-grid</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;
+}
+</div></code></pre>
+<p>Parent menjadi area acuan. Gambar berada di layer belakang, sementara grid
+program berada di layer depan.</p>
+<h2 id="8-menghubungkan-section-ke-halaman">8. Menghubungkan section ke halaman</h2>
+<p>Pastikan <code>app/page.tsx</code> mengimpor <code>About</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> <span class="hljs-title class_">Hero</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./section/Hero&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">About</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./section/About&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Hero</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">About</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span></span>
+  );
+}
+</div></code></pre>
+<p>Jika <code>About</code> sudah seperti ini, tidak perlu mengubah <code>page.tsx</code>.</p>
+<h2 id="9-mengubah-susunan-empat-box">9. Mengubah susunan empat box</h2>
+<p>Setiap <code>program-grid</code> menggunakan CSS Grid Areas. Nama area harus konsisten:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.program-grid--bisnis</span> {
+  <span class="hljs-attribute">grid-template-areas</span>:
+    <span class="hljs-string">&quot;program-1 program-1&quot;</span>
+    <span class="hljs-string">&quot;program-2 program-3&quot;</span>
+    <span class="hljs-string">&quot;program-4 program-4&quot;</span>;
+}
+</div></code></pre>
+<p>Urutan program ditentukan oleh posisi array:</p>
+<pre class="hljs"><code><div>programs[0] -&gt; program-1
+programs[1] -&gt; program-2
+programs[2] -&gt; program-3
+programs[3] -&gt; program-4
+</div></code></pre>
+<p>Contoh jika box pertama ingin berada di kiri dan tiga box lain berada di kanan:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.program-grid--kerja</span> {
+  <span class="hljs-attribute">grid-template-areas</span>:
+    <span class="hljs-string">&quot;program-1 program-2&quot;</span>
+    <span class="hljs-string">&quot;program-1 program-3&quot;</span>
+    <span class="hljs-string">&quot;program-1 program-4&quot;</span>;
+}
+</div></code></pre>
+<p>Jumlah kolom pada setiap baris harus konsisten. Jangan membuat pola dengan
+jumlah kolom yang tidak sama karena CSS Grid dapat menghasilkan layout yang
+tidak diharapkan.</p>
+<h2 id="10-menjalankan-dan-menguji">10. Menjalankan dan menguji</h2>
+<p>Jalankan development server:</p>
+<pre class="hljs"><code><div>npm run dev
+</div></code></pre>
+<p>Buka alamat yang ditampilkan Next.js, biasanya:</p>
+<pre class="hljs"><code><div>http://localhost:3000
+</div></code></pre>
+<p>Uji checklist berikut:</p>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">Tiga flag terlihat.</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">Flag Kuliah aktif saat halaman pertama dibuka.</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">Flag aktif tetap berwarna.</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">Flag lain menjadi grayscale.</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">Klik Bisnis mengganti judul, deskripsi, dan program.</label></li>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Klik Kuliah mengganti judul, deskripsi, dan program.</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">Klik Kerja mengganti judul, deskripsi, dan program.</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Tepat empat box tampil untuk setiap pilar.</label></li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Teks berada di atas gambar box.</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Tidak ada gambar yang pecah.</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Tampilan tetap terbaca pada layar mobile.</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Tombol flag dapat dipilih menggunakan keyboard.</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">Tidak ada error TypeScript atau ESLint.</label></li>
+</ul>
+<p>Sebelum selesai, jalankan:</p>
+<pre class="hljs"><code><div>npm run lint
+npm run build
+</div></code></pre>
+<h2 id="11-error-umum-dan-solusinya">11. Error umum dan solusinya</h2>
+<h3 id="error-invalid-hook-call">Error: <code>Invalid hook call</code></h3>
+<p>Penyebabnya biasanya <code>useState</code> diletakkan di luar function component.</p>
+<p>Salah:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> [activePillar, setActivePillar] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;kuliah&quot;</span>);
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">About</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+}
+</div></code></pre>
+<p>Benar:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">About</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [activePillar, setActivePillar] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;kuliah&quot;</span>);
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+}
+</div></code></pre>
+<h3 id="error-image-with-fill-requires-a-non-static-position-parent">Error: <code>Image with fill requires a non-static position parent</code></h3>
+<p>Tambahkan:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.program-box</span>,
+<span class="hljs-selector-class">.pilar-section__program-area</span> {
+  <span class="hljs-attribute">position</span>: relative;
+}
+</div></code></pre>
+<p>Parent juga harus memiliki tinggi atau <code>min-height</code>.</p>
+<h3 id="error-class-aktif-tidak-berubah">Error: class aktif tidak berubah</h3>
+<p>Pastikan template string menggunakan backtick:</p>
+<pre class="hljs"><code><div>className={<span class="hljs-string">`flag <span class="hljs-subst">${isActive ? <span class="hljs-string">&quot;flag-active&quot;</span> : <span class="hljs-string">&quot;flag-inactive&quot;</span>}</span>`</span>}
+</div></code></pre>
+<p>Jangan menggunakan tanda kutip biasa:</p>
+<pre class="hljs"><code><div>className={<span class="hljs-string">&#x27;flag ${isActive ? &quot;flag-active&quot; : &quot;flag-inactive&quot;}&#x27;</span>}
+</div></code></pre>
+<h3 id="error-gambar-tidak-muncul">Error: gambar tidak muncul</h3>
+<p>Untuk gambar di <code>public/flag-bisnis.png</code>, gunakan:</p>
+<pre class="hljs"><code><div>src=<span class="hljs-string">&quot;/flag-bisnis.png&quot;</span>
+</div></code></pre>
+<p>Bukan:</p>
+<pre class="hljs"><code><div>src=<span class="hljs-string">&quot;/public/flag-bisnis.png&quot;</span>
+</div></code></pre>
+<h3 id="error-teks-berada-di-belakang-gambar">Error: teks berada di belakang gambar</h3>
+<p>Pastikan content memiliki <code>position</code> dan <code>z-index</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.program-box__content</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;
+}
+</div></code></pre>
+<p>Gambar harus memiliki z-index lebih rendah:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.program-box__background</span> {
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">0</span>;
+}
+</div></code></pre>
+<h3 id="error-layout-box-selalu-sama">Error: layout box selalu sama</h3>
+<p>Pastikan class layout memakai nilai <code>activePillar</code>:</p>
+<pre class="hljs"><code><div>className={<span class="hljs-string">`program-grid program-grid--<span class="hljs-subst">${activePillar}</span>`</span>}
+</div></code></pre>
+<p>Dan CSS memiliki selector yang sesuai:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.program-grid--bisnis</span> { <span class="hljs-comment">/* layout bisnis */</span> }
+<span class="hljs-selector-class">.program-grid--kuliah</span> { <span class="hljs-comment">/* layout kuliah */</span> }
+<span class="hljs-selector-class">.program-grid--kerja</span> { <span class="hljs-comment">/* layout kerja */</span> }
+</div></code></pre>
+<h2 id="12-pengembangan-lanjutan">12. Pengembangan lanjutan</h2>
+<h3 id="menambahkan-gambar-berbeda-untuk-setiap-program">Menambahkan gambar berbeda untuk setiap program</h3>
+<p>Ubah type <code>Program</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">Program</span> = {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">description</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">image</span>: <span class="hljs-built_in">string</span>;
+};
+</div></code></pre>
+<p>Lalu ubah <code>ProgramBoxProps</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">type</span> <span class="hljs-title class_">ProgramBoxProps</span> = {
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">description</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">image</span>: <span class="hljs-built_in">string</span>;
+};
+</div></code></pre>
+<p><code>ProgramBox</code> dapat memakai <code>image</code> dari props:</p>
+<pre class="hljs"><code><div>&lt;<span class="hljs-title class_">Image</span>
+  className=<span class="hljs-string">&quot;program-box__background&quot;</span>
+  src={image}
+  alt=<span class="hljs-string">&quot;&quot;</span>
+  fill
+  sizes=<span class="hljs-string">&quot;(max-width: 640px) 100vw, 50vw&quot;</span>
+/&gt;
+</div></code></pre>
+<h3 id="menambahkan-animasi-saat-program-berganti">Menambahkan animasi saat program berganti</h3>
+<p>Class <code>key={activePillar}</code> pada <code>program-grid</code> membuat React membuat ulang grid
+ketika pilar berubah. Animasi CSS dapat ditambahkan:</p>
+<pre class="hljs"><code><div><span class="hljs-selector-class">.program-grid</span> {
+  <span class="hljs-attribute">animation</span>: program-grid-enter <span class="hljs-number">350ms</span> ease both;
+}
+
+<span class="hljs-keyword">@keyframes</span> program-grid-enter {
+  <span class="hljs-selector-tag">from</span> {
+    <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(<span class="hljs-number">12px</span>);
+  }
+
+  <span class="hljs-selector-tag">to</span> {
+    <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(<span class="hljs-number">0</span>);
+  }
+}
+</div></code></pre>
+<p>Jangan lupa mempertahankan media query <code>prefers-reduced-motion</code> jika animasi
+ditambahkan.</p>
+<h2 id="13-ringkasan-tanggung-jawab-setiap-file">13. Ringkasan tanggung jawab setiap file</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Tanggung jawab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app/data/pilar.ts</code></td>
+<td>Menyimpan data tiga pilar dan dua belas program</td>
+</tr>
+<tr>
+<td><code>app/component/Flag.tsx</code></td>
+<td>Menampilkan satu flag dan menangani klik</td>
+</tr>
+<tr>
+<td><code>app/component/ProgramBox.tsx</code></td>
+<td>Menampilkan satu box dengan gambar dan teks</td>
+</tr>
+<tr>
+<td><code>app/component/pilar-section.css</code></td>
+<td>Mengatur warna, grayscale, overlay, responsive, dan grid</td>
+</tr>
+<tr>
+<td><code>app/section/About.tsx</code></td>
+<td>Menyimpan state dan menggabungkan semua komponen</td>
+</tr>
+<tr>
+<td><code>app/page.tsx</code></td>
+<td>Memasang section ke halaman utama</td>
+</tr>
+<tr>
+<td><code>public/*</code></td>
+<td>Menyimpan asset gambar</td>
+</tr>
+</tbody>
+</table>
+<p>Jika terjadi perubahan pada isi program, edit <code>app/data/pilar.ts</code>. Jika terjadi
+perubahan pada bentuk atau posisi visual, edit CSS. Jika terjadi perubahan
+pada alur klik atau state, edit <code>About.tsx</code>.</p>
+
+</body>
+</html>

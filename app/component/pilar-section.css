@@ -1,0 +1,348 @@
+.pilar-section {
+  min-height: 100vh;
+  overflow: hidden;
+  padding: 64px 12px 96px;
+  color: #fff;
+  background: #160602;
+}
+
+.pilar-section__heading {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pilar-section__heading h1 {
+  margin: 0;
+  color: #efc67b;
+  font-family: var(--font-kastemo), serif;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.pilar-section__heading h1 span {
+  display: block;
+  font-family: var(--font-arexa), serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+}
+
+.pilar-section__heading h2 {
+  margin: 16px 0 0;
+  color: #efc67b;
+  font-family: var(--font-fraunces), serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.pilar-section__flags {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 900px;
+  padding-top: 0;
+}
+
+.pilar-section__flag-stage {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 900px);
+  margin: 40px auto 0;
+}
+
+.pilar-section__flag-overlay {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  width: min(100%, 800px);
+  height: auto;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.flag {
+  position: relative;
+  display: block;
+  width: 36vw;
+  margin: 0 -9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    filter 300ms ease;
+}
+
+.flag:nth-child(1) {
+  z-index: 1;
+}
+
+.flag:nth-child(2) {
+  z-index: 2;
+}
+
+.flag:nth-child(3) {
+  z-index: 1;
+}
+
+.flag:not(.flag-active):hover,
+.flag:not(.flag-active):focus-visible {
+  filter: grayscale(0);
+}
+
+.flag:focus-visible {
+  outline: 3px solid #efc67b;
+  outline-offset: 4px;
+}
+
+.flag-active {
+  z-index: 3;
+  filter: grayscale(0);
+}
+
+.flag-inactive {
+  filter: grayscale(1);
+}
+
+.flag__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pilar-section__description {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  margin: 32px auto 0;
+  text-align: center;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.pilar-section__description strong {
+  font-weight: 700;
+}
+
+.pilar-section__program-area {
+  position: relative;
+  max-width: 900px;
+  min-height: 660px;
+  margin: 40px auto 0;
+  padding: 32px 12px;
+  overflow: hidden;
+}
+
+.pilar-section__background {
+  z-index: 0;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.35;
+}
+
+.program-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  margin: 0 auto;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.program-grid--bisnis {
+  grid-template-areas:
+    "program-1"
+    "program-2"
+    "program-3"
+    "program-4";
+}
+
+.program-grid--kuliah {
+  width: calc(100vw - 24px);
+  margin-right: calc((100vw - 24px) / -2);
+  margin-left: calc((100vw - 24px) / -2);
+  padding-right: 12px;
+  padding-bottom: 14px;
+  padding-left: 12px;
+  grid-template-columns: repeat(4, min(78vw, 340px));
+  grid-template-areas: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scrollbar-color: #efc67b rgb(255 255 255 / 12%);
+  scrollbar-width: thin;
+}
+
+.program-grid--kerja {
+  grid-template-areas:
+    "program-1"
+    "program-2"
+    "program-3"
+    "program-4";
+}
+
+.program-grid .program-box:nth-child(1) {
+  grid-area: program-1;
+}
+
+.program-grid .program-box:nth-child(2) {
+  grid-area: program-2;
+}
+
+.program-grid .program-box:nth-child(3) {
+  grid-area: program-3;
+}
+
+.program-grid .program-box:nth-child(4) {
+  grid-area: program-4;
+}
+
+.program-grid.program-grid--kuliah .program-box {
+  grid-area: auto;
+}
+
+.program-grid--bisnis .program-box:only-child,
+.program-grid--kerja .program-box:only-child {
+  width: min(100%, 340px);
+  justify-self: center;
+  grid-column: 1 / -1;
+}
+
+.program-grid--kuliah::-webkit-scrollbar {
+  height: 10px;
+}
+
+.program-grid--kuliah::-webkit-scrollbar-track {
+  border: 1px solid rgb(239 198 123 / 25%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 10%);
+}
+
+.program-grid--kuliah::-webkit-scrollbar-thumb {
+  border: 2px solid #160602;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #087ba8, #efc67b);
+}
+
+.program-grid--kuliah::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #0d9dcc, #f7d99d);
+}
+
+.program-box {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  overflow: hidden;
+  border-radius: 2px;
+  isolation: isolate;
+}
+
+.program-box__background {
+  z-index: 0;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.program-box::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: rgb(0 20 34 / 58%);
+  content: "";
+  pointer-events: none;
+}
+
+.program-box__title {
+  position: absolute;
+  z-index: 2;
+  top: 9%;
+  left: 9%;
+  width: 82%;
+  margin: 0;
+}
+
+.program-box__body {
+  position: absolute;
+  z-index: 2;
+  top: 29%;
+  right: 9%;
+  bottom: 9%;
+  left: 9%;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.program-box__body p {
+  margin: 0;
+}
+
+@media (min-width: 641px) {
+  .pilar-section {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .pilar-section__flags {
+    margin: -150px auto 0;
+  }
+
+  .flag {
+    width: min(31vw, 300px);
+    margin: 0 -12px;
+  }
+
+  .pilar-section__program-area {
+    min-height: 560px;
+    padding: 48px 24px;
+  }
+
+  .program-box {
+    min-height: 300px;
+  }
+
+  .program-grid {
+    width: min(100%, 880px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .program-grid--bisnis .program-box:only-child,
+  .program-grid--kerja .program-box:only-child {
+    width: min(100%, 560px);
+  }
+
+  .program-grid--bisnis {
+    grid-template-areas:
+      "program-1 program-1"
+      "program-2 program-3"
+      "program-4 program-4";
+  }
+
+  .program-grid--kuliah {
+    width: min(100%, 880px);
+    margin: 0 auto;
+    padding-right: 0;
+    padding-left: 0;
+    grid-template-columns: repeat(4, minmax(280px, 1fr));
+  }
+
+  .program-grid--kerja {
+    grid-template-areas:
+      "program-1 program-1"
+      "program-2 program-3"
+      "program-4 program-4";
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flag {
+    transition: none;
+  }
+}
