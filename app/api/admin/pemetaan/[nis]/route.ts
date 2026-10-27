@@ -1,5 +1,5 @@
 import { isAdminAuthenticated, isSameOriginRequest } from "@/app/lib/require-admin";
-import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
+import { getPemetaanSupabaseConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
 
 type Context = { params: Promise<{ nis: string }> };
 type Participant = {
@@ -15,7 +15,7 @@ type Participant = {
 async function getTarget(request: Request, context: Context) {
   if (!isSameOriginRequest(request)) return { error: Response.json({ error: "Permintaan lintas origin ditolak." }, { status: 403 }) };
   if (!(await isAdminAuthenticated())) return { error: Response.json({ error: "Sesi admin tidak valid." }, { status: 401 }) };
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) return { error: Response.json({ error: "Database belum dikonfigurasi." }, { status: 503 }) };
   const { nis } = await context.params;
   if (!/^\d{1,30}$/.test(nis)) return { error: Response.json({ error: "NIS tidak valid." }, { status: 400 }) };
@@ -108,7 +108,7 @@ function parseParticipant(body: ParticipantInput) {
   return { participant };
 }
 
-async function validateOptions(config: NonNullable<ReturnType<typeof getSupabaseServerConfig>>, participant: Participant) {
+async function validateOptions(config: NonNullable<ReturnType<typeof getPemetaanSupabaseConfig>>, participant: Participant) {
   const query = (table: string, label: string) => new URLSearchParams({ select: "label", label: `eq.${label}`, active: "eq.true", limit: "1" });
   const responses = await Promise.all([
     fetch(supabaseTableUrl(config.baseUrl, config.classesTable, query(config.classesTable, participant.kelas)), { headers: supabaseHeaders(config.serviceKey), cache: "no-store" }),

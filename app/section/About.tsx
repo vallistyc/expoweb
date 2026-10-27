@@ -13,11 +13,11 @@ export default function About() {
 
 
     return (
-        <section className="bg-[#110400] h-fit flex flex-col justify-start items-center py-15">
+        <section className="bg-black h-fit flex flex-col justify-start items-center py-15">
 
-            <h1 className="text-[#EFC67B] text-center text-2xl font-kastemo">
+            <h1 className="text-[#EFC67B] text-center text-5xl font-kastemo">
                 Apa yang Baru di <br />
-                <span className="font-arexa text-6xl">EXPO CAMPUS?</span>
+                <span className="flex flex-col text-center line-height-0 pb-15 bg-linear-to-r from-[#5A3A00] via-[#EF9A00] to-[#5A3A00] bg-clip-text text-8xl font-arexa leading-none text-transparent">EXPO CAMPUS?</span>
             </h1>
 
             <h2 className="text-[#EFC67B] text-center text-2xl font-fraunces">

@@ -1,5 +1,5 @@
 import { isAdminAuthenticated, isSameOriginRequest } from "@/app/lib/require-admin";
-import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
+import { getPemetaanSupabaseConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
 
 const PAGE_SIZE = 50;
 
@@ -43,7 +43,7 @@ async function readJson(request: Request) {
 }
 
 async function validateOptions(
-  config: NonNullable<ReturnType<typeof getSupabaseServerConfig>>,
+  config: NonNullable<ReturnType<typeof getPemetaanSupabaseConfig>>,
   participant: NonNullable<ReturnType<typeof parseParticipant>["participant"]>,
 ) {
   const optionQuery = (table: string, label: string) => new URLSearchParams({
@@ -65,7 +65,7 @@ async function validateOptions(
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) return Response.json({ error: "Permintaan lintas origin ditolak." }, { status: 403 });
   if (!(await isAdminAuthenticated())) return Response.json({ error: "Sesi admin tidak valid." }, { status: 401 });
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) return Response.json({ error: "Database belum dikonfigurasi." }, { status: 503 });
   const body = await readJson(request);
   const parsed = body && parseParticipant(body);
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   if (!(await isAdminAuthenticated())) return Response.json({ error: "Sesi admin tidak valid." }, { status: 401 });
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) return Response.json({ error: "Database belum dikonfigurasi." }, { status: 503 });
 
   const pageParam = Number(new URL(request.url).searchParams.get("page") || "1");

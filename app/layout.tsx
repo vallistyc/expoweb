@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins, Alex_Brush, Fraunces, Montserrat } from "next/font/google";
+import { Poppins, Alex_Brush, Fraunces, Montserrat, Geist } from "next/font/google";
 import localfont from "next/font/local";
 import "./globals.css";
 import Navbar from "./component/navbar";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const arexa = localfont({
   src: "../public/fonts/ArexaDemo-Regular.otf",
@@ -12,6 +15,20 @@ const arexa = localfont({
 const kastemo = localfont({
   src: "../public/fonts/Kastemo.otf",
   variable: "--font-kastemo",
+});
+
+const mileast = localfont({
+  src: [
+    {
+      path: "../public/fonts/Mileast.otf",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Mileast Italic.otf",
+      style: "italic",
+    },
+  ],
+  variable: "--font-mileast-family",
 });
 
 const montserrat = Montserrat({
@@ -50,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="id"
-      className={`${poppins.variable} ${kastemo.variable} ${alex_brush.variable} ${montserrat.variable} ${fraunces.variable} ${arexa.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", poppins.variable, kastemo.variable, mileast.variable, alex_brush.variable, montserrat.variable, fraunces.variable, arexa.variable, "font-sans", geist.variable)}
     >
       <body className="">
         <Navbar />

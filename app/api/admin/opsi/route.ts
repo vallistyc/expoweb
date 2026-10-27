@@ -1,9 +1,9 @@
 import { isAdminAuthenticated, isSameOriginRequest } from "@/app/lib/require-admin";
-import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
+import { getPemetaanSupabaseConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
 
 type OptionType = "kelas" | "rumpun";
 
-function optionTable(config: NonNullable<ReturnType<typeof getSupabaseServerConfig>>, type: OptionType) {
+function optionTable(config: NonNullable<ReturnType<typeof getPemetaanSupabaseConfig>>, type: OptionType) {
   return type === "kelas" ? config.classesTable : config.rumpunTable;
 }
 
@@ -18,7 +18,7 @@ async function readBody(request: Request) {
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) return Response.json({ error: "Permintaan lintas origin ditolak." }, { status: 403 });
   if (!(await isAdminAuthenticated())) return Response.json({ error: "Sesi admin tidak valid." }, { status: 401 });
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) return Response.json({ error: "Database belum dikonfigurasi." }, { status: 503 });
   const body = await readBody(request);
   if (!body || (body.type !== "kelas" && body.type !== "rumpun") || typeof body.label !== "string") {

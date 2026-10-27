@@ -1,5 +1,5 @@
 import { isAdminAuthenticated, isSameOriginRequest } from "@/app/lib/require-admin";
-import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
+import { getPemetaanSupabaseConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
 
 type Context = { params: Promise<{ id: string }> };
 
@@ -16,7 +16,7 @@ async function supabaseError(response: Response, fallback: string) {
 async function getTarget(request: Request, context: Context) {
   if (!isSameOriginRequest(request)) return { error: Response.json({ error: "Permintaan lintas origin ditolak." }, { status: 403 }) };
   if (!(await isAdminAuthenticated())) return { error: Response.json({ error: "Sesi admin tidak valid." }, { status: 401 }) };
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) return { error: Response.json({ error: "Database belum dikonfigurasi." }, { status: 503 }) };
   const { id } = await context.params;
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {

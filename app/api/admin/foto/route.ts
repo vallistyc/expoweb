@@ -1,9 +1,9 @@
 import { isAdminAuthenticated } from "@/app/lib/require-admin";
-import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
+import { getPemetaanSupabaseConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
 
 export async function GET(request: Request) {
   if (!(await isAdminAuthenticated())) return Response.json({ error: "Sesi admin tidak valid." }, { status: 401 });
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) return Response.json({ error: "Database belum dikonfigurasi." }, { status: 503 });
   const nis = new URL(request.url).searchParams.get("nis")?.trim();
   if (!nis || !/^\d{1,30}$/.test(nis)) return Response.json({ error: "NIS tidak valid." }, { status: 400 });

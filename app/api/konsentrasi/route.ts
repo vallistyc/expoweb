@@ -1,4 +1,4 @@
-import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
+import { getPemetaanSupabaseConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
 
 function jsonError(error: string, status: number) {
   return Response.json({ error }, { status });
@@ -23,7 +23,7 @@ function isUniqueViolation(body: string) {
 }
 
 export async function POST(request: Request) {
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) {
     return jsonError("Koneksi Supabase belum dikonfigurasi dengan benar.", 500);
   }

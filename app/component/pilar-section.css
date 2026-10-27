@@ -51,7 +51,7 @@
   position: relative;
   z-index: 2;
   width: min(100%, 900px);
-  margin: 40px auto 0;
+  margin: 30px auto 0;
 }
 
 .pilar-section__flag-overlay {
@@ -59,7 +59,7 @@
   z-index: 2;
   top: 0;
   left: 50%;
-  width: min(100%, 800px);
+  width: min(100%, 850px);
   height: auto;
   transform: translateX(-50%);
   pointer-events: none;

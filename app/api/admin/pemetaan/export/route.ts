@@ -1,5 +1,5 @@
 import { isAdminAuthenticated } from "@/app/lib/require-admin";
-import { getSupabaseServerConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
+import { getPemetaanSupabaseConfig, supabaseHeaders, supabaseTableUrl } from "@/app/lib/supabase-server";
 import { createXlsx } from "@/app/lib/xlsx-export";
 
 const PAGE_SIZE = 1000;
@@ -30,7 +30,7 @@ type ParticipantRow = {
 
 export async function GET() {
   if (!(await isAdminAuthenticated())) return Response.json({ error: "Sesi admin tidak valid." }, { status: 401 });
-  const config = getSupabaseServerConfig();
+  const config = getPemetaanSupabaseConfig();
   if (!config) return Response.json({ error: "Database belum dikonfigurasi." }, { status: 503 });
 
   const query = new URLSearchParams({

@@ -15,6 +15,26 @@ const nextConfig: NextConfig = {
       },
     },
   },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "rrblgddxkrylakuynswz.supabase.co",
+        pathname: "/storage/v1/object/public/univ-logo/**", 
+      },
+      {
+        protocol: "https",
+        hostname: "rrblgddxkrylakuynswz.supabase.co",
+        pathname: "/storage/v1/object/public/pemateri/**",
+      },
+      {
+        protocol: "https",
+        hostname: "rrblgddxkrylakuynswz.supabase.co",
+        pathname: "/storage/v1/object/public/lembaga/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
