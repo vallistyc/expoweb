@@ -16,6 +16,14 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Supabase
+
+The public job-fair section reads `expoweb.lembaga` and needs these fields:
+`nama_lembaga`, `jenis`, `logo`, and `uraian`. The `aktif` and `urutan`
+fields control publication status and display order. Execute
+[`supabase/lembaga.sql`](./supabase/lembaga.sql) in the Supabase SQL Editor
+before opening the page.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

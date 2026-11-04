@@ -24,7 +24,9 @@ export default async function Universities() {
         .schema("expoweb")
         .from("lembaga")
         .select("id_lembaga, nama_lembaga, logo, jenis, uraian")
-        // .order("nama_kampus", { ascending: true });
+        .eq("aktif", true)
+        .order("urutan", { ascending: true })
+        .order("nama_lembaga", { ascending: true });
 
     // Check if there was an error during the query execution. If there was, display an error message. Otherwise, map over the data and render the list of universities with their logos, names, and types.
     if (error) {
