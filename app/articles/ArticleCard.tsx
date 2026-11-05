@@ -2,13 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 type ArticleCardProps = {
-    id: string,
+    slug: string,
     title: string,
     thumbnail: string,
     published: string,
 }
 
-export default function ArticleCard({id, title, published, thumbnail}:ArticleCardProps) {
+export default function ArticleCard({slug, title, published, thumbnail}:ArticleCardProps) {
     const formattedDate = new Intl.DateTimeFormat("id-ID", {
         day: "numeric",
         month: "long",
@@ -17,7 +17,7 @@ export default function ArticleCard({id, title, published, thumbnail}:ArticleCar
 
     return (
         <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] shadow-2xl shadow-black/20 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[#EEC57A]/50 hover:bg-white/[0.1]">
-            <Link href={`/articles/${id}`} className="flex h-full flex-col">
+            <Link href={`/articles/${slug}`} className="flex h-full flex-col">
                 <div className="relative aspect-[16/10] overflow-hidden bg-white/10">
                     <Image
                         src={thumbnail}

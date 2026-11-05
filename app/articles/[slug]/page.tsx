@@ -15,10 +15,12 @@ type Article = {
 };
 
 type ArticlePageProps = {
-    params: Promise<{ id: string }>;
+    params: Promise<{ slug: string }>;
 };
 
-async function getArticle(id: string) {
+export const instant = false;
+
+async function getArticle(slug: string) {
     const supabase = createSupabaseServerClient();
 
     if (!supabase) {
@@ -29,7 +31,7 @@ async function getArticle(id: string) {
         .schema("expoweb")
         .from("articles")
         .select("id, title, slug, thumbnail, content, status, published_at")
-        .eq("id", id)
+        .eq("slug", slug)
         .eq("status", "published")
         .maybeSingle();
 
@@ -41,8 +43,8 @@ async function getArticle(id: string) {
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-    const { id } = await params;
-    const { article } = await getArticle(id);
+    const { slug } = await params;
+    const { article } = await getArticle(slug);
 
     return {
         title: article ? `${article.title} | EXCAMP 27` : "Artikel | EXCAMP 27",
@@ -51,8 +53,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 }
 
 export default async function ArticleDetailPage({ params }: ArticlePageProps) {
-    const { id } = await params;
-    const { article, error } = await getArticle(id);
+    const { slug } = await params;
+    const { article, error } = await getArticle(slug);
 
     if (error) {
         return (

@@ -9,6 +9,8 @@ type Articles = {
     published_at: string
 }
 
+export const instant = false;
+
 export default async function ArticlesPage() {
     const supabase = createSupabaseServerClient();
 
@@ -56,7 +58,7 @@ export default async function ArticlesPage() {
                 {listArticles.map((article)=>(
                     <ArticleCard
                     key={article.id}
-                    id={article.id}
+                    slug={article.slug}
                     title={article.title}
                     thumbnail={article.thumbnail}
                     published={article.published_at}
