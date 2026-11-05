@@ -3,6 +3,7 @@ import { Poppins, Alex_Brush, Fraunces, Montserrat, Geist } from "next/font/goog
 import localfont from "next/font/local";
 import "./globals.css";
 import Navbar from "./component/navbar";
+import Footer from "./Footer";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="">
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

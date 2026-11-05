@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -14,15 +15,15 @@ const navItems = [
   { href: "/", label: "Beranda" },
   { href: "/articles", label: "Pusat Informasi" },
   {
-    href: "#program",
+    href: "/program",
     label: "Program",
     children: [
-      { href: "#program", label: "Semua Program" },
-      { href: "#program-kelaskonsentrasi", label: "Kelas Konsentrasi" },
-      { href: "#program-tryoutsnbt", label: "Try Out SNBT" },
-      { href: "#program-kelasmotivasi", label: "Kelas Motivasi" },
-      { href: "#program-minijobfair", label: "Mini Job Fair" },
-      { href: "#program-seminarbisnis", label: "Seminar Bisnis" },
+      { href: "/program", label: "Semua Program" },
+      { href: "/program/kelas-konsentrasi", label: "Kelas Konsentrasi" },
+      { href: "/program/try-out-snbt", label: "Try Out SNBT" },
+      { href: "/program/kelas-motivasi", label: "Kelas Motivasi" },
+      { href: "/program/mini-job-fair", label: "Mini Job Fair" },
+      { href: "/program/seminar-bisnis", label: "Seminar Bisnis" },
     ],
   },
   { href: "#kontak", label: "Kontak" },
@@ -66,7 +67,7 @@ function Navigation({ isExperimentalPage }: { isExperimentalPage: boolean }) {
   return (
     <header
       aria-hidden={!isVisible}
-      className={`fixed left-1/2 top-5 z-50 w-[calc(100%-32px)] max-w-full -translate-x-1/2 transition-[opacity,transform,visibility] duration-700 ease-out motion-reduce:transition-none md:max-w-7xl ${
+      className={`fixed left-1/2 top-3 z-50 w-[calc(100%-16px)] max-w-full -translate-x-1/2 transition-[opacity,transform,visibility] duration-700 ease-out motion-reduce:transition-none md:top-5 md:max-w-7xl ${
         isVisible
           ? "visible translate-y-0 opacity-100"
           : "invisible -translate-y-6 opacity-0 pointer-events-none"
@@ -74,18 +75,22 @@ function Navigation({ isExperimentalPage }: { isExperimentalPage: boolean }) {
     >
       <nav
         aria-label="Navigasi utama"
-        className="relative w-full flex h-[46px] items-center justify-between border border-[#8f6868] bg-[linear-gradient(90deg,rgba(27,0,0,0.38)_6.25%,rgba(92,0,0,0.38)_50.48%,rgba(27,0,0,0.38)_100%)] px-8 backdrop-blur-[4px] md:h-[72px] md:px-8"
+        className="relative flex h-16 w-full items-center justify-between border border-[#8f6868] bg-[linear-gradient(90deg,rgba(27,0,0,0.72)_6.25%,rgba(92,0,0,0.72)_50.48%,rgba(27,0,0,0.72)_100%)] px-3 backdrop-blur-[8px] md:h-[76px] md:px-8"
       >
         <Link
           href="/"
           onClick={closeMenus}
-          className="inline-flex items-start text-[24px] font-normal leading-none tracking-[-0.06em] text-white md:text-[27px]"
+          className="inline-flex size-12 shrink-0 items-center justify-center md:size-14"
           aria-label="Excamp 27 - Beranda"
         >
-          <span className="font-serif">EXCAMP</span>
-          <span className="ml-0.5 mt-0.5 font-serif text-[12px] leading-none tracking-normal text-red-500 md:text-sm">
-            27
-          </span>
+          <Image
+            src="/logo-excamp.webp"
+            alt="Excamp 27"
+            width={100}
+            height={100}
+            priority
+            className="h-full object-contain"
+          />
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">

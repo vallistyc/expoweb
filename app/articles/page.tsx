@@ -9,8 +9,6 @@ type Articles = {
     published_at: string
 }
 
-export const instant = false;
-
 export default async function ArticlesPage() {
     const supabase = createSupabaseServerClient();
 
@@ -38,28 +36,28 @@ export default async function ArticlesPage() {
             </div>
         )
     }
-
+    
     return (
         <main className="min-h-screen bg-[#080808] px-5 py-20 text-white sm:px-8 lg:px-12">
-            <header className="mx-auto mb-12 flex max-w-7xl flex-col items-center text-center">
+            <header className="mx-auto mb-12 max-w-7xl flex flex-col text-center justify-center items-center">
                 <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-[#EEC57A]">
                     Cerita terbaru
                 </p>
-                <div className="flex flex-col items-center justify-between gap-5">
+                <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
                     <h1 className="max-w-2xl font-arexa text-5xl leading-[0.95] text-[#EEC57A] sm:text-7xl">
                         Kabar Terkini
                     </h1>
-                    <p className="mx-auto max-w-sm text-sm leading-6 text-white/50">
+                    <p className="max-w-sm text-sm leading-6 text-white/50">
                         Temukan cerita, kabar, dan informasi terbaru dari Expo Campus.
                     </p>
                 </div>
             </header>
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {listArticles.map((article)=>(
-                    <ArticleCard
+                    <ArticleCard 
                     key={article.id}
-                    slug={article.slug}
                     title={article.title}
+                    slug={article.slug} 
                     thumbnail={article.thumbnail}
                     published={article.published_at}
                     />

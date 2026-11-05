@@ -6,7 +6,6 @@ import Pemateri from "./section/Pemateri";
 import Jobfair from "./section/Jobfair";
 import Timeline from "./section/Timeline";
 import FAQ from "./section/FAQ";
-import Footer from "./Footer";
 
 export default function Home() {
   return (
@@ -30,7 +29,6 @@ export default function Home() {
           <FAQ />
         </div>
       </main>
-      <Footer />
     </>
   );
 }

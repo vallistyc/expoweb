@@ -38,6 +38,16 @@ const nextConfig: NextConfig = {
         hostname: "rrblgddxkrylakuynswz.supabase.co",
         pathname: "/storage/v1/object/public/news/**",
       },
+      {
+        protocol: "https",
+        hostname: "rrblgddxkrylakuynswz.supabase.co",
+        pathname: "/storage/v1/object/public/Program/Thumbnail/**",
+      },
+      {
+        protocol: "https",
+        hostname: "example.com",
+        pathname: "/logo-dummy-04.png",
+      },
     ],
   },
 };
