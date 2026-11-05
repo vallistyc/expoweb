@@ -12,7 +12,7 @@ type NavItem = {
 
 const navItems = [
   { href: "/", label: "Beranda" },
-  { href: "#tentang", label: "Pusat Informasi" },
+  { href: "/articles", label: "Pusat Informasi" },
   {
     href: "#program",
     label: "Program",

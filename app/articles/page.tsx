@@ -1,20 +1,68 @@
-import { div } from "motion/react-client";
 import ArticleCard from "./ArticleCard";
+import {createSupabaseServerClient} from "../lib/supabase-server";
 
+type Articles = {
+    id: string
+    title: string
+    slug: string
+    thumbnail: string
+    published_at: string
+}
 
-export default function ArticlesPage() {
+export default async function ArticlesPage() {
+    const supabase = createSupabaseServerClient();
+
+    if (!supabase) {
+        return <p>Gagal menghubungkan ke database, periksa Environment Variables</p>;
+    }
+
+    const {data, error} = await supabase
+    .schema("expoweb")
+    .from("articles")
+    .select("id, title, slug, thumbnail, published_at")
+    .eq("status", "published")
+    .order("published_at", {ascending: true})
+
+    if (error) {
+        return <p className="text-red-500 text-center">Gagal mengambil data dari database: {error.message}</p>;
+    }
+
+    const listArticles = (data ?? []) as Articles[];
+
+    if (listArticles.length === 0) {
+        return (
+            <div className="flex min-h-[70vh] items-center justify-center bg-[#080808] px-6">
+                <p className="text-center text-xl text-white/60">Belum ada artikel nih.</p>
+            </div>
+        )
+    }
+
     return (
-        <div className="bg-black flex flex-col h-screen justify-start py-25 items-center">
-            <h1 className=" text-center text-7xl font-arexa text-[#EEC57A] pb-5">
-                Kabar Terkini
-            </h1>
-            <ArticleCard 
-            title="Buku Panduan Expo Campus 2027"
-            slug="buku-panduan-expo-campus-2027" 
-            thumbnail="/hero-img.gif"
-            published="5 mei 2026"
-            />
-
-        </div>
+        <main className="min-h-screen bg-[#080808] px-5 py-20 text-white sm:px-8 lg:px-12">
+            <header className="mx-auto mb-12 flex max-w-7xl flex-col items-center text-center">
+                <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-[#EEC57A]">
+                    Cerita terbaru
+                </p>
+                <div className="flex flex-col items-center justify-between gap-5">
+                    <h1 className="max-w-2xl font-arexa text-5xl leading-[0.95] text-[#EEC57A] sm:text-7xl">
+                        Kabar Terkini
+                    </h1>
+                    <p className="mx-auto max-w-sm text-sm leading-6 text-white/50">
+                        Temukan cerita, kabar, dan informasi terbaru dari Expo Campus.
+                    </p>
+                </div>
+            </header>
+            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {listArticles.map((article)=>(
+                    <ArticleCard
+                    key={article.id}
+                    id={article.id}
+                    title={article.title}
+                    thumbnail={article.thumbnail}
+                    published={article.published_at}
+                    />
+                ))}
+            </div>
+        </main>
     )
 }

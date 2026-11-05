@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
         hostname: "rrblgddxkrylakuynswz.supabase.co",
         pathname: "/storage/v1/object/public/lembaga/**",
       },
+      {
+        protocol: "https",
+        hostname: "rrblgddxkrylakuynswz.supabase.co",
+        pathname: "/storage/v1/object/public/news/**",
+      },
     ],
   },
 };
