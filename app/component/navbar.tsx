@@ -75,7 +75,7 @@ function Navigation({ isExperimentalPage }: { isExperimentalPage: boolean }) {
     >
       <nav
         aria-label="Navigasi utama"
-        className="relative flex h-16 w-full items-center justify-between border border-[#8f6868] bg-[linear-gradient(90deg,rgba(27,0,0,0.72)_6.25%,rgba(92,0,0,0.72)_50.48%,rgba(27,0,0,0.72)_100%)] px-3 backdrop-blur-[8px] md:h-[76px] md:px-8"
+        className="relative flex h-[68px] w-full items-center justify-between border border-[#8f6868] bg-[linear-gradient(90deg,rgba(27,0,0,0.72)_6.25%,rgba(92,0,0,0.72)_50.48%,rgba(27,0,0,0.72)_100%)] px-3 backdrop-blur-[8px] md:h-[82px] md:px-8"
       >
         <Link
           href="/"

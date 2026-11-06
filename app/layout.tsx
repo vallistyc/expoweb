@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./component/navbar";
 import Footer from "./Footer";
 import { cn } from "@/lib/utils";
+import FloatingContact from "./component/FloatingContact";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="">
         <Navbar />
         {children}
+        <FloatingContact />
         <Footer />
       </body>
     </html>
